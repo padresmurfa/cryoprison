@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 
 namespace Cryoprison.Inspectors
 {
@@ -40,6 +41,10 @@ namespace Cryoprison.Inspectors
                 {
                     return true;
                 }
+            }
+            catch (FileNotFoundException)
+            {
+                return false;
             }
             catch (Exception ex)
             {

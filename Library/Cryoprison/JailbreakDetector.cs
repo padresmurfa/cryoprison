@@ -12,23 +12,7 @@ namespace Cryoprison
     {
         private List<string> jailbreaks = null;
 
-        private List<IInspector> inspectors;
-
-        public JailbreakDetector(IEnumerable<IInspector> inspectors = null)
-        {
-            var type = typeof(IInspector);
-
-            this.inspectors = AppDomain.CurrentDomain.GetAssemblies()
-                .SelectMany(s => s.GetTypes())
-                .Where(p => type.IsAssignableFrom(p))
-                .Select(x => Instantiate(x)).Where(x => x != null)
-                .ToList();
-
-            if (inspectors != null)
-            {
-                this.inspectors.AddRange(inspectors);
-            }
-        }
+        private List<IInspector> inspectors = new List<IInspector>();
 
         protected void AddInspectors(IEnumerable<IInspector> inspectors)
         {
@@ -80,6 +64,10 @@ namespace Cryoprison
             try
             {
                 return (IInspector)Activator.CreateInstance(type);
+            }
+            catch (MissingMethodException)
+            {
+                return null;
             }
             catch (Exception ex)
             {

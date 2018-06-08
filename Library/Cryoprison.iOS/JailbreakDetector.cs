@@ -88,6 +88,8 @@ namespace Cryoprison.iOS
             // later:  forking, info plist and exe modification
             // maybe: obfuscate self to hide from sneaky jailbreaks.
 
+            this.AddInspectors(new[] { new ShouldBeMobileProvisioned() });
+
             this.AddInspectors(PathsShouldNotBeSymbolicLinks.GetInspectors<Cryoprison.iOS.PlatformSpecific.PathNotSymbolicLink>());
 
             this.AddInspectors(FilesShouldNotBePresent.GetInspectors<FileNotPresent>());

@@ -44,6 +44,10 @@ namespace Cryoprison.Inspectors
                 }
                 return true;
             }
+            catch (System.UnauthorizedAccessException)
+            {
+                return false;
+            }
             catch (Exception ex)
             {
                 Reporter.ReportException($"IsFileDestructivelyWritable bombed for {path}", ex);
