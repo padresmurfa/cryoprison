@@ -35,6 +35,14 @@ namespace Cryoprison
             this.inspectors.AddRange(inspectors);
         }
 
+        public void Refresh()
+        {
+            lock (this)
+            {
+                this.jailbreaks = null;
+            }
+        }
+
         public IEnumerable<string> Violations
         {
             get

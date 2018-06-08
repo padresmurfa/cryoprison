@@ -6,6 +6,8 @@ namespace Cryoprison
 {
     public interface IJailbreakDetector
     {
+        void Refresh();
+
         bool IsJailbroken { get; }
 
         IEnumerable<string> Violations { get; }
