@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <MSBuildAllProjects>$(MSBuildAllProjects);$(MSBuildThisFileFullPath)</MSBuildAllProjects>
+    <HasSharedItems>true</HasSharedItems>
+    <SharedGUID>{69611251-210F-47C5-A5E7-7DFCF9C38699}</SharedGUID>
+  </PropertyGroup>
+  <PropertyGroup Label="Configuration">
+    <Import_RootNamespace>Cryoprison</Import_RootNamespace>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="$(MSBuildThisFileDirectory)IJailbreakDetector.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Reporter.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Checks.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Inspectors\DirectoryNotPresent.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Inspectors\FileNotAccessible.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Inspectors\FileNotDestructivelyWritable.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Inspectors\FileNotPresent.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Inspectors\UrlNotOpenable.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)IInspector.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)JailbreakDetector.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Inspectors\PathNotSymbolicLink.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="$(MSBuildThisFileDirectory)Inspectors\" />
+  </ItemGroup>
+</Project>
