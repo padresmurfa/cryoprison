@@ -81,14 +81,30 @@ namespace Cryoprison.iOS
             set { Cryoprison.Reporter.OnExceptionReported = value; }
         }
 
-        public JailbreakDetector()
+        public JailbreakDetector(bool? simulatorFriendly = null)
         {
-            // TODO: more ideas include (from)
+            if (simulatorFriendly == null)
+            {
+#if DEBUG
+                simulatorFriendly = true;
+#else
+                simulatorFriendly = false;
+#endif
+            }
+
+            // TODO: There is some interesting obfuscated logic here
+            //   that would be worth investigating further.  Might be some
+            //   cool tricks there.
             //   https://github.com/masbog/isJB/blob/master/JailbreakDetection/JBDetect.m
-            // later:  forking, info plist and exe modification
+            // 
+            // later:  add forking, info plist and exe modification detection
+            // 
             // maybe: obfuscate self to hide from sneaky jailbreaks.
 
-            this.AddInspectors(new[] { new ShouldBeMobileProvisioned() });
+            if (!simulatorFriendly.Value)
+            {
+                this.AddInspectors(new[] { new ShouldBeMobileProvisioned() });
+            }
 
             this.AddInspectors(PathsShouldNotBeSymbolicLinks.GetInspectors<Cryoprison.iOS.PlatformSpecific.PathNotSymbolicLink>());
 
@@ -96,11 +112,12 @@ namespace Cryoprison.iOS
 
             this.AddInspectors(FilesShouldNotBeAccessible.GetInspectors<FileNotAccessible>());
 
-#if !DEBUG
-            this.AddInspectors(DeveloperFilesShouldNotBePresent.GetInspectors<FileNotPresent>());
+            if (!simulatorFriendly.Value)
+            {
+                this.AddInspectors(DeveloperFilesShouldNotBePresent.GetInspectors<FileNotPresent>());
 
-            this.AddInspectors(DeveloperFilesShouldNotBeAccessible.GetInspectors<FileNotAccessible>());
-#endif
+                this.AddInspectors(DeveloperFilesShouldNotBeAccessible.GetInspectors<FileNotAccessible>());
+            }
 
             this.AddInspectors(DirectoriesShouldNotBePresent.GetInspectors<DirectoryNotPresent>());
 
