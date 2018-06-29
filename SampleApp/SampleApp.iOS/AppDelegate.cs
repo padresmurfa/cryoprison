@@ -23,10 +23,6 @@ namespace SampleApp.iOS
         //
         public override bool FinishedLaunching(UIApplication app, NSDictionary options)
         {
-            #if DEBUG
-                Cryoprison.Inspectors.ShouldBeMobileProvisioned.Disabled = true;
-            #endif
-
             this.jailbreakDetector = new Cryoprison.iOS.JailbreakDetector();
 
             Cryoprison.iOS.JailbreakDetector.OnJailbreakReported = (id) => {

@@ -95,6 +95,10 @@
       <Project>{28B9712D-1395-4204-8472-73C6845D9812}</Project>
       <Name>SampleApp</Name>
     </ProjectReference>
+    <ProjectReference Include="..\..\Library\Cryoprison.Android\Cryoprison.Android.csproj">
+      <Project>{56B4E23B-CAC3-4179-8576-80271C43CA62}</Project>
+      <Name>Cryoprison.Android</Name>
+    </ProjectReference>
   </ItemGroup>
  <Import Project="$(MSBuildExtensionsPath)\Xamarin\Android\Xamarin.Android.CSharp.targets" />
 </Project>

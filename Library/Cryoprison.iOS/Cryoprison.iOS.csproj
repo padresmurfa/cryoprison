@@ -54,7 +54,7 @@
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="PlatformSpecific\UrlNotOpenable.cs" />
-    <Compile Include="JailbreakDetector.cs" />
+    <Compile Include="JailbreakDetector.iOS.cs" />
     <Compile Include="PlatformSpecific\ShouldBeMobileProvisioned.cs" />
     <Compile Include="PlatformSpecific\PathNotSymbolicLink.cs" />
   </ItemGroup>
