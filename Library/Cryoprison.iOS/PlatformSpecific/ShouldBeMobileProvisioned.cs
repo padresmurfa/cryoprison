@@ -4,15 +4,22 @@ using Foundation;
 
 namespace Cryoprison.Inspectors
 {
+    /// <summary>
+    /// iOS specific check to determine if the app is has been provisioned for
+    /// mobile.
+    /// </summary>
     public class ShouldBeMobileProvisioned : IInspector
     {
-        public static bool Disabled { get; set; } = false;
-
+        /// <summary>
+        /// Initialize the inspector.  This inspector does not have any need
+        /// for params really, so it ignores them.
+        /// </summary>
         public IInspector Init(string id, string path)
         {
             return this;
         }
 
+        /// <inheritdoc/>
         public string Id
         {
             get
@@ -21,19 +28,18 @@ namespace Cryoprison.Inspectors
             }
         }
 
+        /// <inheritdoc/>
         public bool Ok
         {
             get
             {
-                if (Disabled)
-                {
-                    // not required, e.g. of debug builds
-                    return true;
-                }
                 return IsMobileProvisioned();
             }
         }
 
+        /// <summary>
+        /// Determines if the app is provisioned for mobile.
+        /// </summary>
         public static bool IsMobileProvisioned()
         {
             try

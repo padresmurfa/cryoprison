@@ -5,6 +5,9 @@ using Cryoprison.Inspectors;
 
 namespace Cryoprison.iOS
 {
+    /// <summary>
+    /// iOS implementation of the Jailbreak Detector.
+    /// </summary>
     public class JailbreakDetector : Cryoprison.JailbreakDetector
     {
         /// <summary>

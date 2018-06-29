@@ -3,35 +3,36 @@ using System.Collections.Generic;
 
 namespace Cryoprison.Inspectors
 {
-    public class DirectoryNotPresent : IInspector
+    /// <summary>
+    /// Detects whether a directory is present, and reports a jailbreak if it
+    /// is not.
+    /// </summary>
+    public class DirectoryNotPresent : InspectorBase
     {
-        private string id;
-        private string path;
-
-        public IInspector Init(string id, string path)
+        /// <summary>
+        /// Initializes a new instance of the <see cref="T:Cryoprison.Inspectors.DirectoryNotPresent"/> class.
+        /// </summary>
+        public DirectoryNotPresent()
+            : base("DIRECTORY_{0}_SHOULD_NOT_BE_PRESENT")
         {
-            this.id = string.Format("DIRECTORY_{0}_SHOULD_NOT_BE_PRESENT",id);
-            this.path = path;
-
-            return this;
         }
 
-        public string Id
-        {
-            get
-            {
-                return this.id;
-            }
-        }
-
-        public bool Ok
+        /// <summary>
+        /// Returns true if the directory identified by 'val' during initialization
+        /// is not present, otherwise false.  This will cause the check to run.
+        /// </summary>
+        public override bool Ok
         {
             get
             {
-                return !IsDirectoryPresent(path);
+                return !IsDirectoryPresent(this.val);
             }
         }
 
+        /// <summary>
+        /// Determines if the directory is actually present
+        /// </summary>
+        /// <param name="path">The full path.</param>
         public static bool IsDirectoryPresent(string path)
         {
             try

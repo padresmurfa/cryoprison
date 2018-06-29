@@ -4,35 +4,35 @@ using System.IO;
 
 namespace Cryoprison.Inspectors
 {
-    public class FileNotAccessible : IInspector
+    /// <summary>
+    /// Detects whether or not a file is accessible, that is can be opened for
+    /// reading
+    /// </summary>
+    public class FileNotAccessible : InspectorBase
     {
-        private string id;
-        private string path;
-
-        public IInspector Init(string id, string path)
+        /// <summary>
+        /// Initializes a new instance of the <see cref="T:Cryoprison.Inspectors.FileNotAccessible"/> class.
+        /// </summary>
+        public FileNotAccessible()
+            : base("FILE_{0}_SHOULD_NOT_BE_ACCESSIBLE")
         {
-            this.id = string.Format("FILE_{0}_SHOULD_NOT_BE_ACCESSIBLE", id);
-            this.path = path;
-
-            return this;
         }
 
-        public string Id
-        {
-            get
-            {
-                return this.id;
-            }
-        }
-
-        public bool Ok
+        /// <summary>
+        /// Returns true if the directory identified by 'val' during initialization
+        /// is not present, otherwise false.  This will cause the check to run.
+        /// </summary>
+        public override bool Ok
         {
             get
             {
-                return !IsFileAccessible(path);
+                return !IsFileAccessible(this.val);
             }
         }
 
+        /// <summary>
+        /// Determines whether the specified file is accessible, that is can be read
+        /// <param name="path">The path to the file.</param>
         public static bool IsFileAccessible(string path)
         {
             try

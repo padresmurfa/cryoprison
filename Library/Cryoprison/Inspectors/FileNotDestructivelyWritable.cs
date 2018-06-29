@@ -4,35 +4,37 @@ using System.IO;
 
 namespace Cryoprison.Inspectors
 {
-    public class FileNotDestructivelyWritable : IInspector
+    /// <summary>
+    /// Detects whether or not a file is writable, that is can be created,
+    /// written to and delete.
+    /// </summary>
+    public class FileNotDestructivelyWritable : InspectorBase
     {
-        private string id;
-        private string path;
-
-        public IInspector Init(string id, string path)
+        /// <summary>
+        /// Initializes a new instance of the <see cref="T:Cryoprison.Inspectors.FileNotDestructivelyWritable"/> class.
+        /// </summary>
+        public FileNotDestructivelyWritable()
+            : base("FILE_{0}_SHOULD_NOT_BE_DESTRUCTIVELY_WRITABLE")
         {
-            this.id = string.Format("FILE_{0}_SHOULD_NOT_BE_DESTRUCTIVELY_WRITABLE", id);
-            this.path = path;
-
-            return this;
         }
 
-        public string Id
-        {
-            get
-            {
-                return this.id;
-            }
-        }
-
-        public bool Ok
+        /// <summary>
+        /// Returns true if the file identified by 'val' during initialization
+        /// can not be created, written to and deleted.
+        /// </summary>
+        public override bool Ok
         {
             get
             {
-                return !IsFileDestructivelyWritable(path);
+                return !IsFileDestructivelyWritable(this.val);
             }
         }
 
+        /// <summary>
+        /// Determines if the file can be destructively written, that is
+        /// create, written to and deleted.
+        /// </summary>
+        /// <param name="path">The full path.</param>
         public static bool IsFileDestructivelyWritable(string path)
         {
             try

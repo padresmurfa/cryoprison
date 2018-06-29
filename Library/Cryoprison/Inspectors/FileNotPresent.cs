@@ -3,35 +3,35 @@ using System.Collections.Generic;
 
 namespace Cryoprison.Inspectors
 {
-    public class FileNotPresent : IInspector
+    /// <summary>
+    /// Determines if a file is present, reporting a jailbreak if it is.
+    /// </summary>
+    public class FileNotPresent : InspectorBase
     {
-        private string id;
-        private string path;
-
-        public IInspector Init(string id, string path)
+        /// <summary>
+        /// Initializes a new instance of the <see cref="T:Cryoprison.Inspectors.FileNotDestructivelyWritable"/> class.
+        /// </summary>
+        public FileNotPresent()
+            : base("FILE_{0}_SHOULD_NOT_BE_PRESENT")
         {
-            this.id = string.Format("FILE_{0}_SHOULD_NOT_BE_PRESENT", id);
-            this.path = path;
-
-            return this;
         }
 
-        public string Id
-        {
-            get
-            {
-                return this.id;
-            }
-        }
-
-        public bool Ok
+        /// <summary>
+        /// Returns true if the file identified by 'val' during initialization
+        /// can not be created, written to and deleted.
+        /// </summary>
+        public override bool Ok
         {
             get
             {
-                return !IsFilePresent(path);
+                return !IsFilePresent(this.val);
             }
         }
 
+        /// <summary>
+        /// Determines if the file is in deed present
+        /// </summary>
+        /// <param name="path">The full path of the file.</param>
         public static bool IsFilePresent(string path)
         {
             try
