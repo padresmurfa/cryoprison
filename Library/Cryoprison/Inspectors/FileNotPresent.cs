@@ -38,6 +38,10 @@ namespace Cryoprison.Inspectors
             {
                 return System.IO.File.Exists(path);
             }
+            catch (System.IO.DirectoryNotFoundException)
+            {
+                return false;
+            }
             catch (Exception ex)
             {
                 Reporter.ReportException($"IsFilePresent bombed for {path}", ex);

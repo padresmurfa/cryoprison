@@ -2,12 +2,13 @@
 
 A mobile app jailbreak detector to be used in Xamarin.
 
-Currently only supports iOS.
+Supports iOS and Android.
 
 ## Architecture
 
 The host application should instantiate a **JailbreakDetector** from the correct
-Cryoprison platform library.
+Cryoprison platform library.  Debug builds will be simulator-friendly to the
+extent possible by default.
 
 The **JailbreakDetector** implements the **IJailbreakDetector** interface, which
 provides three methods, as described below:
@@ -38,6 +39,10 @@ FileNotPresent | * | Checks that the configured file is not present.
 PathNotSymbolicLink | * | Checks that the configured path is not as symbolic link.
 UrlNotOpenable | * | Checks that the configured url can not be opened.
 ShouldBeMobileProvisioned | iOS | Checks that the app has a mobile provisioning profile.
+ShouldNotBeAbleToLocateFile | Android | Checks that a specific file is not found via 'which'.
+ShouldNotHavePackageInstalled | Android | Check that a specific package is not installed.
+ShouldNotHavePropValues | Android | Check for specific prop values via 'getprop'
+ShouldNotHaveSpecificBuildTags | Android | Check that the kernal was not built with specific build tags, indicating a third party build.
 
 The host may optionally register with the **Reporter** for global exception handling
 and jailbreak detection, for example for logging purposes.  This is done
@@ -52,7 +57,7 @@ OnExceptionReported | Invoked each time an exception occurs, with an internal re
 
 ## SampleApp
 
-The sample app is a very simple xamarin forms application that performs a
+The sample app is a very simple Xamarin forms application that performs a
 jailbreak detection check when the main window appears.
 
 ## Library

@@ -46,6 +46,10 @@ namespace Cryoprison.Inspectors
                 }
                 return true;
             }
+            catch (System.IO.DirectoryNotFoundException)
+            {
+                return false;
+            }
             catch (System.UnauthorizedAccessException)
             {
                 return false;

@@ -35,6 +35,26 @@ namespace Cryoprison
         private List<Check> checks { get; set; } = new List<Check>();
 
         /// <summary>
+        /// The root paths to search.  When a check is added, a version with
+        /// each root path is used.  If there is a seperator required, then the
+        /// caller must either always include it in the root paths, or always
+        /// include it in the added values.
+        /// </summary>
+        private List<string> rootPaths { get; set; } = new List<string>(new[] { "" });
+
+        /// <summary>
+        /// Adds the specified roots to our root paths collection.
+        /// </summary>
+        /// <returns>The Checks factory itself (this) for continued fluent operations</returns>
+        /// <param name="roots">The roots to add</param>
+        public Checks AddRoots(params string[] roots)
+        {
+            this.rootPaths.AddRange(roots);
+
+            return this;
+        }
+
+        /// <summary>
         /// Add an individual check to the factory
         /// </summary>
         /// <returns>The Checks factory itself (this) for continued fluent operations</returns>
@@ -42,7 +62,10 @@ namespace Cryoprison
         /// <param name="val">The value, or parameter used when instantiating the inspector.</param>
         public Checks Add(string checkId, string val)
         {
-            this.checks.Add(new Check { CheckId = checkId, Value = val });
+            foreach (var root in this.rootPaths)
+            {
+                this.checks.Add(new Check { CheckId = checkId, Value = root + val });
+            }
 
             return this;
         }
