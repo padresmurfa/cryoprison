@@ -36,6 +36,21 @@ namespace Cryoprison
                 var r = OnExceptionReported;
                 if (r != null)
                 {
+                    // robustness - no null messages
+                    message = message ?? "<unknown location>";
+
+                    // robustness - no null exception
+                    if (exception == null)
+                    {
+                        try
+                        {
+                            throw new Exception("Unexpected exception");
+                        }
+                        catch (Exception ex)
+                        {
+                            exception = ex;
+                        }
+                    }
                     r(message, exception);
                 }
             }
@@ -56,6 +71,9 @@ namespace Cryoprison
                 var r = OnJailbreakReported;
                 if (r != null)
                 {
+                    // robustness - no null ids
+                    id = id ?? "unidentified jailbreak";
+
                     r(id);
                 }
             }

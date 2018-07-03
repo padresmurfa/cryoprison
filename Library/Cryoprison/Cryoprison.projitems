@@ -21,6 +21,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)JailbreakDetector.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Inspectors\PathNotSymbolicLink.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Inspectors\InspectorBase.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Check.cs" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="$(MSBuildThisFileDirectory)Inspectors\" />

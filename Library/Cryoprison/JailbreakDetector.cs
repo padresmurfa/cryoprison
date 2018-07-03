@@ -14,14 +14,15 @@ namespace Cryoprison
     public class JailbreakDetector : IJailbreakDetector
     {
         /// <summary>
-        /// The jailbreaks that were detected.
+        /// The jailbreaks that were detected, or null if we need to run the
+        /// inspection process first.
         /// </summary>
-        private List<string> jailbreaks = null;
+        protected List<string> jailbreaks = null;
 
         /// <summary>
         /// The inspectors that we use to detect jailbreaks.
         /// </summary>
-        private List<IInspector> inspectors = new List<IInspector>();
+        protected List<IInspector> inspectors = new List<IInspector>();
 
         /// <summary>
         /// Call this method to add inspectors during construction.
@@ -29,6 +30,12 @@ namespace Cryoprison
         /// <param name="inspectors">The inspectors.</param>
         protected void AddInspectors(IEnumerable<IInspector> inspectors)
         {
+            if (inspectors == null)
+            {
+                return;
+            }
+
+            inspectors = inspectors.Where(x => x != null);
             lock (this)
             {
                 this.inspectors.AddRange(inspectors);
@@ -51,13 +58,11 @@ namespace Cryoprison
             {
                 lock (this)
                 {
-                    if (this.jailbreaks == null)
-                    {
-                        var jailbreaks = this.inspectors.Select(Inspect).Where(x => x != null);
+                    this.RunIfNeeded();
 
-                        this.jailbreaks = jailbreaks.ToList();
-                    }
-                    return this.jailbreaks;
+                    var retval = new List<string>();
+                    retval.AddRange(this.jailbreaks);
+                    return retval;
                 }
             }
         }
@@ -67,43 +72,12 @@ namespace Cryoprison
         {
             get
             {
-                return this.Violations.Any();
-            }
-        }
+                lock (this)
+                {
+                    this.RunIfNeeded();
 
-        /// <summary>
-        /// Internal list of inspector types that are base classes and thus should
-        /// not be instantiated directly.
-        /// </summary>
-        private static Type[] nopes = new [] { typeof(UrlNotOpenable), typeof(FileNotPresent), typeof(DirectoryNotPresent), typeof(FileNotAccessible), typeof(FileNotDestructivelyWritable),  typeof(IInspector), typeof(InspectorBase) };
-
-        /// <summary>
-        /// Instantiates the specific inspector type.  Returns null if its not
-        /// to be used directly, e.g. has no default constructor or is a known
-        /// base class.
-        /// </summary>
-        /// <returns>The instantiated inspector.</returns>
-        /// <param name="type">The inspector type to instantiate.</param>
-        public static IInspector Instantiate(Type type)
-        {
-            if (nopes.Any(x => x == type))
-            {
-                return null;
-            }
-
-            try
-            {
-                return (IInspector)Activator.CreateInstance(type);
-            }
-            catch (MissingMethodException)
-            {
-                return null;
-            }
-            catch (Exception ex)
-            {
-                Reporter.ReportException("IInspector.Instantiate failed", ex);
-
-                return null;
+                    return this.jailbreaks.Any();
+                }
             }
         }
 
@@ -135,6 +109,20 @@ namespace Cryoprison
                 Reporter.ReportException("Inspector crashed: " + id, ex);
 
                 return null;
+            }
+        }
+
+        /// <summary>
+        /// Initializines the jailbreaks list by running the spectors, if neccessary.
+        /// Must be called under lock.
+        /// </summary>
+        private void RunIfNeeded()
+        {
+            if (this.jailbreaks == null)
+            {
+                var jailbreaks = this.inspectors.Select(Inspect).Where(x => x != null);
+
+                this.jailbreaks = jailbreaks.ToList();
             }
         }
     }

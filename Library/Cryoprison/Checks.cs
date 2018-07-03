@@ -1,28 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Cryoprison
 {
-    /// <summary>
-    /// A check is an id-value pair, identifying both the jailbreak and the
-    /// variant which is basically the parameter sent to the inspector.
-    /// </summary>
-    public class Check
-    {
-        /// <summary>
-        /// The identifier of the check, which will be used to create the
-        /// identifier / jailbreak ID.  CheckId could e.g. be FOO while the
-        /// identifier / jailbreak ID could e.g. be derived to be
-        /// FILE_FOO_SHOULD_BE_PRESENT.
-        /// </summary>
-        public string CheckId { get; set; }
-
-        /// <summary>
-        /// The value, or parameter used when instantiating the jailbreak
-        /// </summary>
-        public string Value { get; set; }
-    }
-
     /// <summary>
     /// A FluentApi factory for building up a collection of checks to be performed
     /// when performing a jailbreak test.
@@ -40,7 +21,7 @@ namespace Cryoprison
         /// caller must either always include it in the root paths, or always
         /// include it in the added values.
         /// </summary>
-        private List<string> rootPaths { get; set; } = new List<string>(new[] { "" });
+        private List<string> rootPaths { get; set; }
 
         /// <summary>
         /// Adds the specified roots to our root paths collection.
@@ -49,7 +30,21 @@ namespace Cryoprison
         /// <param name="roots">The roots to add</param>
         public Checks AddRoots(params string[] roots)
         {
-            this.rootPaths.AddRange(roots);
+            if (roots == null)
+            {
+                return this;
+            }
+
+            var validRoots = roots.Where(x => !string.IsNullOrEmpty(x));
+
+            if (this.rootPaths == null)
+            {
+                this.rootPaths = new List<string>(validRoots);
+            }
+            else
+            {
+                this.rootPaths.AddRange(validRoots);
+            }
 
             return this;
         }
@@ -62,9 +57,14 @@ namespace Cryoprison
         /// <param name="val">The value, or parameter used when instantiating the inspector.</param>
         public Checks Add(string checkId, string val)
         {
-            foreach (var root in this.rootPaths)
+            if (checkId != null && !string.IsNullOrEmpty(val))
             {
-                this.checks.Add(new Check { CheckId = checkId, Value = root + val });
+                var rootPaths = this.rootPaths ?? new List<string>(new[] { "" });
+
+                foreach (var root in rootPaths)
+                {
+                    this.checks.Add(new Check { CheckId = checkId, Value = root + val });
+                }
             }
 
             return this;
@@ -78,9 +78,12 @@ namespace Cryoprison
         /// <param name="val">The values, or parameters used when instantiating the inspectors.</param>
         public Checks Add(string checkId, params string[] vals)
         {
-            foreach (var val in vals)
+            if (checkId != null && vals != null)
             {
-                this.Add(checkId, val);
+                foreach (var val in vals)
+                {
+                    this.Add(checkId, val);
+                }
             }
 
             return this;
@@ -95,9 +98,34 @@ namespace Cryoprison
         {
             var retval = new List<IInspector>();
 
-            foreach (var check in checks)
+            foreach (var check in this.checks)
             {
-                retval.Add(new T().Init(check.CheckId.ToUpperInvariant(), check.Value));
+                T uninitialized;
+                try
+                {
+                    uninitialized = new T();
+                }
+                catch (Exception ex)
+                {
+                    var typeName = typeof(T).FullName;
+                    Reporter.ReportException($"GetInspectors bombed while constructing {typeName}", ex);
+                    continue;
+                }
+
+                IInspector initialized;
+                try
+                {
+                    var checkId = check?.CheckId?.ToUpperInvariant();
+                    initialized = uninitialized.Init(checkId, check.Value);
+                }
+                catch (Exception ex)
+                {
+                    var typeName = typeof(T)?.FullName;
+                    Reporter.ReportException($"GetInspectors bombed while initializing {typeName}", ex);
+                    continue;
+                }
+
+                retval.Add(initialized);
             }
 
             return retval;
