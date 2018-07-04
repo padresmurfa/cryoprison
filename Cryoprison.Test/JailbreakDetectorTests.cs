@@ -13,7 +13,9 @@ namespace Cryoprison.Test
         [Fact]
         public void ByDefaultNothingIsInspected()
         {
-            var d = new Mocks.JailbreakDetector();
+            var env = new Ex.Env();
+
+            var d = new Mocks.JailbreakDetector(env);
 
             Assert.False(d.HasRun);
 
@@ -26,7 +28,9 @@ namespace Cryoprison.Test
         [Fact]
         public void RefreshWorks()
         {
-            var d = new Mocks.JailbreakDetector();
+            var env = new Ex.Env();
+
+            var d = new Mocks.JailbreakDetector(env);
 
             Assert.False(d.HasRun);
 
@@ -42,10 +46,12 @@ namespace Cryoprison.Test
         [Fact]
         public void AddInspectorsWorks()
         {
+            var env = new Ex.Env();
+
             var i1 = new Mocks.Inspector();
             var i2 = new Mocks.Inspector();
 
-            var d = new Mocks.JailbreakDetector(new[] { i1, i2 });
+            var d = new Mocks.JailbreakDetector(env, new[] { i1, i2 });
 
             var inspectors = d.GetInspectors();
 
@@ -57,8 +63,10 @@ namespace Cryoprison.Test
         [Fact]
         public void AddInspectorsIsRobust()
         {
+            var env = new Ex.Env();
+
             // 1. empty list
-            var d = new Mocks.JailbreakDetector(new IInspector[0]);
+            var d = new Mocks.JailbreakDetector(env, new IInspector[0]);
 
             var inspectors = d.GetInspectors();
 
@@ -72,7 +80,7 @@ namespace Cryoprison.Test
             Assert.Equal(0, inspectors.Count());
 
             // 3. null in otherwise empty list
-            d = new Mocks.JailbreakDetector(new IInspector[] { null });
+            d = new Mocks.JailbreakDetector(env, new IInspector[] { null });
 
             inspectors = d.GetInspectors();
 
@@ -81,7 +89,7 @@ namespace Cryoprison.Test
             var i1 = new Mocks.Inspector();
 
             // 4. null in otherwise non-empty list
-            d = new Mocks.JailbreakDetector(new IInspector[] { null, i1, null });
+            d = new Mocks.JailbreakDetector(env, new IInspector[] { null, i1, null });
 
             inspectors = d.GetInspectors();
 
@@ -93,10 +101,12 @@ namespace Cryoprison.Test
         [Fact]
         public void RunsInspectorsWhenNeeded()
         {
+            var env = new Ex.Env();
+
             // 1. IsJailbroken
             var inspector = new Mocks.Inspector();
 
-            var d = new Mocks.JailbreakDetector(new[] { inspector });
+            var d = new Mocks.JailbreakDetector(env, new[] { inspector });
 
             Assert.False(d.IsJailbroken);
 
@@ -105,7 +115,7 @@ namespace Cryoprison.Test
             // 2. Violations
             inspector = new Mocks.Inspector();
 
-            d = new Mocks.JailbreakDetector(new[] { inspector });
+            d = new Mocks.JailbreakDetector(env, new[] { inspector });
 
             Assert.Empty(d.Violations);
 
@@ -115,11 +125,13 @@ namespace Cryoprison.Test
         [Fact]
         public void DetectsJailbreaks()
         {
+            var env = new Ex.Env();
+
             var inspector = new Mocks.Inspector();
 
-            inspector.Init("NOTOK", "asdf");
+            inspector.Init(env, "NOTOK", "asdf");
 
-            var d = new Mocks.JailbreakDetector(new[] { inspector });
+            var d = new Mocks.JailbreakDetector(env, new[] { inspector });
 
             Assert.True(d.IsJailbroken);
             Assert.Equal(1, d.Violations.Count());
@@ -129,11 +141,13 @@ namespace Cryoprison.Test
         [Fact]
         public void DetectsLackOfJailbreaks()
         {
+            var env = new Ex.Env();
+
             var inspector = new Mocks.Inspector();
 
-            inspector.Init("OK", "asdf");
+            inspector.Init(env, "OK", "asdf");
 
-            var d = new Mocks.JailbreakDetector(new[] { inspector });
+            var d = new Mocks.JailbreakDetector(env, new[] { inspector });
 
             Assert.False(d.IsJailbroken);
             Assert.Equal(0, d.Violations.Count());
@@ -142,12 +156,14 @@ namespace Cryoprison.Test
         [Fact]
         public void IsThreadsafeToDegreeReasonablyTestable()
         {
+            var env = new Ex.Env();
+
             // Violations returns a shallow-copied list.
             var inspector = new Mocks.Inspector();
 
-            inspector.Init("OK", "asdf");
+            inspector.Init(env, "OK", "asdf");
 
-            var d = new Mocks.JailbreakDetector(new[] { inspector });
+            var d = new Mocks.JailbreakDetector(env, new[] { inspector });
 
             var v1 = d.Violations;
             d.Refresh();
@@ -161,14 +177,16 @@ namespace Cryoprison.Test
         [Fact]
         public void ReportsJailbreaks()
         {
+            var env = new Ex.Env();
+
             var inspector = new Mocks.Inspector();
 
-            inspector.Init("NOTOK", "asdf");
+            inspector.Init(env, "NOTOK", "asdf");
 
-            var d = new Mocks.JailbreakDetector(new[] { inspector });
+            var d = new Mocks.JailbreakDetector(env, new[] { inspector });
 
             string reportedJailbreak = null;
-            Reporter.OnJailbreakReported = (j) =>
+            env.Reporter.OnJailbreakReported = (j) =>
             {
                 reportedJailbreak = j;
             };
@@ -180,14 +198,16 @@ namespace Cryoprison.Test
         [Fact]
         public void DoesNotReportLackOfJailbreaks()
         {
+            var env = new Ex.Env();
+
             var inspector = new Mocks.Inspector();
 
-            inspector.Init("OK", "asdf");
+            inspector.Init(env, "OK", "asdf");
 
-            var d = new Mocks.JailbreakDetector(new[] { inspector });
+            var d = new Mocks.JailbreakDetector(env, new[] { inspector });
 
             string reportedJailbreak = null;
-            Reporter.OnJailbreakReported = (j) =>
+            env.Reporter.OnJailbreakReported = (j) =>
             {
                 reportedJailbreak = j;
             };
@@ -199,16 +219,18 @@ namespace Cryoprison.Test
         [Fact]
         public void ReportsExceptions()
         {
+            var env = new Ex.Env();
+
             var inspector = new Mocks.InspectorThatBombsDuringRun();
 
-            inspector.Init("OK", "asdf");
+            inspector.Init(env, "OK", "asdf");
 
-            var d = new Mocks.JailbreakDetector(new[] { inspector });
+            var d = new Mocks.JailbreakDetector(env, new[] { inspector });
 
             string reportedMessage = null;
             Exception reportedException = null;
 
-            Reporter.OnExceptionReported = (msg,ex) =>
+            env.Reporter.OnExceptionReported = (msg,ex) =>
             {
                 reportedMessage = msg;
                 reportedException = ex;

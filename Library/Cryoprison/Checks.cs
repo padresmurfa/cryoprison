@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using Cryoprison.Ex;
 
 namespace Cryoprison
 {
@@ -8,8 +9,13 @@ namespace Cryoprison
     /// A FluentApi factory for building up a collection of checks to be performed
     /// when performing a jailbreak test.
     /// </summary>
-    public class Checks
+    public class Checks : EnvDependant
     {
+        public Checks(Env env)
+            : base(env)
+        {
+        }
+
         /// <summary>
         /// The list of checks in this fluent factory
         /// </summary>
@@ -108,7 +114,7 @@ namespace Cryoprison
                 catch (Exception ex)
                 {
                     var typeName = typeof(T).FullName;
-                    Reporter.ReportException($"GetInspectors bombed while constructing {typeName}", ex);
+                    Env.Reporter.ReportException($"GetInspectors bombed while constructing {typeName}", ex);
                     continue;
                 }
 
@@ -116,12 +122,12 @@ namespace Cryoprison
                 try
                 {
                     var checkId = check?.CheckId?.ToUpperInvariant();
-                    initialized = uninitialized.Init(checkId, check.Value);
+                    initialized = uninitialized.Init(this.Env, checkId, check.Value);
                 }
                 catch (Exception ex)
                 {
                     var typeName = typeof(T)?.FullName;
-                    Reporter.ReportException($"GetInspectors bombed while initializing {typeName}", ex);
+                    Env.Reporter.ReportException($"GetInspectors bombed while initializing {typeName}", ex);
                     continue;
                 }
 

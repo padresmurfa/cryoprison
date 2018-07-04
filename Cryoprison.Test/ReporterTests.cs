@@ -16,17 +16,21 @@ namespace Cryoprison.Test
         [Fact]
         public void IsNotSetByDefault()
         {
-            Assert.Null(Reporter.OnExceptionReported);
-            Assert.Null(Reporter.OnJailbreakReported);
+            var env = new Ex.Env();
+
+            Assert.Null(env.Reporter.OnExceptionReported);
+            Assert.Null(env.Reporter.OnJailbreakReported);
         }
 
         [Fact]
         public void IsOptional()
         {
+            var env = new Ex.Env();
+
             try
             {
-                Reporter.ReportException("asdf", new Exception());
-                Reporter.ReportJailbreak("asdf");
+                env.Reporter.ReportException("asdf", new Exception());
+                env.Reporter.ReportJailbreak("asdf");
             }
             catch (Exception ex)
             {
@@ -38,10 +42,12 @@ namespace Cryoprison.Test
         [Fact]
         public void ReportsExceptions()
         {
+            var env = new Ex.Env();
+
             string reportedLocation = null;
             Exception reportedException = null;
 
-            Reporter.OnExceptionReported = (l, e) => {
+            env.Reporter.OnExceptionReported = (l, e) => {
                 reportedLocation = l;
                 reportedException = e;
             };
@@ -49,7 +55,7 @@ namespace Cryoprison.Test
             var loc = "location";
             var ex = new Exception("exception");
 
-            Reporter.ReportException(loc, ex);
+            env.Reporter.ReportException(loc, ex);
 
             Assert.Same(loc, reportedLocation);
             Assert.Same(ex, reportedException);
@@ -58,15 +64,17 @@ namespace Cryoprison.Test
         [Fact]
         public void ReportsJailbreaks()
         {
+            var env = new Ex.Env();
+
             string reportedJailbreak = null;
 
-            Reporter.OnJailbreakReported = (j) => {
+            env.Reporter.OnJailbreakReported = (j) => {
                 reportedJailbreak = j;
             };
 
             var jailbreakId = "jailbreak";
 
-            Reporter.ReportJailbreak(jailbreakId);
+            env.Reporter.ReportJailbreak(jailbreakId);
 
             Assert.Same(jailbreakId, reportedJailbreak);
         }
@@ -74,10 +82,12 @@ namespace Cryoprison.Test
         [Fact]
         public void ReportExceptionsIsRobust()
         {
+            var env = new Ex.Env();
+
             string reportedLocation = null;
             Exception reportedException = null;
 
-            Reporter.OnExceptionReported = (l, e) => {
+            env.Reporter.OnExceptionReported = (l, e) => {
                 reportedLocation = l;
                 reportedException = e;
             };
@@ -85,7 +95,7 @@ namespace Cryoprison.Test
             var loc = "location";
             var ex = new Exception("exception");
 
-            Reporter.ReportException(loc, null);
+            env.Reporter.ReportException(loc, null);
 
             Assert.Same(loc, reportedLocation);
             Assert.Equal("Unexpected exception", reportedException.Message);
@@ -93,7 +103,7 @@ namespace Cryoprison.Test
             reportedLocation = null;
             reportedException = null;
 
-            Reporter.ReportException(null, ex);
+            env.Reporter.ReportException(null, ex);
 
             Assert.Same(ex, reportedException);
             Assert.Equal("<unknown location>", reportedLocation);
@@ -101,18 +111,18 @@ namespace Cryoprison.Test
             reportedLocation = null;
             reportedException = null;
 
-            Reporter.ReportException(null, null);
+            env.Reporter.ReportException(null, null);
 
             Assert.Equal("Unexpected exception", reportedException.Message);
             Assert.Equal("<unknown location>", reportedLocation);
 
-            Reporter.OnExceptionReported = (l, e) => {
+            env.Reporter.OnExceptionReported = (l, e) => {
                 throw new Exception("fubar");
             };
 
             try
             {
-                Reporter.ReportException(null, null);
+                env.Reporter.ReportException(null, null);
             }
             catch (Exception x)
             {
@@ -126,17 +136,19 @@ namespace Cryoprison.Test
         {
             string reportedJailbreak = null;
 
-            Reporter.OnJailbreakReported = (j) => { reportedJailbreak = j; };
+            var env = new Ex.Env();
 
-            Reporter.ReportJailbreak(null);
+            env.Reporter.OnJailbreakReported = (j) => { reportedJailbreak = j; };
+
+            env.Reporter.ReportJailbreak(null);
 
             Assert.Equal("unidentified jailbreak", reportedJailbreak);
 
-            Reporter.OnJailbreakReported = (j) => { throw new Exception("fubar"); };
+            env.Reporter.OnJailbreakReported = (j) => { throw new Exception("fubar"); };
 
             try
             {
-                Reporter.ReportJailbreak("jailbreak");
+                env.Reporter.ReportJailbreak("jailbreak");
             }
             catch (Exception x)
             {

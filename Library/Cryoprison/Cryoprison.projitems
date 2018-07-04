@@ -10,7 +10,6 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="$(MSBuildThisFileDirectory)IJailbreakDetector.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Reporter.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Checks.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Inspectors\DirectoryNotPresent.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Inspectors\FileNotAccessible.cs" />
@@ -22,8 +21,16 @@
     <Compile Include="$(MSBuildThisFileDirectory)Inspectors\PathNotSymbolicLink.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Inspectors\InspectorBase.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Check.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Ex\System.IO.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Ex\Env.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Ex\Reporter.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Ex\System.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Ex\System.IO.Directory.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Ex\EnvDependant.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Ex\System.IO.File.cs" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="$(MSBuildThisFileDirectory)Inspectors\" />
+    <Folder Include="$(MSBuildThisFileDirectory)Ex\" />
   </ItemGroup>
 </Project>

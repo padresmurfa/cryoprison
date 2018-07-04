@@ -13,19 +13,31 @@ namespace Cryoprison.iOS
         /// <summary>
         /// These directories should not be present in the first place.
         /// </summary>
-        private static readonly Checks DirectoriesShouldNotBePresent = new Checks().
-          Add("SBSETTINGS", "/private/var/mobileLibrary/SBSettingsThemes").
-          Add("STASH", "/private/var/stash").
-          Add("APT", "/private/var/lib/apt", "/private/var/cache/apt", "/var/lib/apt", "/private/var/lib/apt", "/private/etc/apt", "/etc/apt", "/private/cache/apt").
-          Add("CYDIA", "/private/var/lib/cydia", "/var/lib/cydia", "/usr/libexec/cydia");
+        private Checks DirectoriesShouldNotBePresent
+        {
+            get
+            {
+                return new Checks(this.Env).
+                  Add("SBSETTINGS", "/private/var/mobileLibrary/SBSettingsThemes").
+                  Add("STASH", "/private/var/stash").
+                  Add("APT", "/private/var/lib/apt", "/private/var/cache/apt", "/var/lib/apt", "/private/var/lib/apt", "/private/etc/apt", "/etc/apt", "/private/cache/apt").
+                  Add("CYDIA", "/private/var/lib/cydia", "/var/lib/cydia", "/usr/libexec/cydia");
+            }
+        }
 
         /// <summary>
         /// These files should never be accessible.  That is, we shouldn't be
         /// able to read them.
         /// </summary>
-        private static readonly Checks FilesShouldNotBeAccessible = new Checks().
-          Add("CYDIA", "/Applications/Cydia.app").
-          Add("APT", "/etc/apt");
+        private Checks FilesShouldNotBeAccessible
+        {
+            get
+            {
+                return new Checks(this.Env).
+                  Add("CYDIA", "/Applications/Cydia.app").
+                  Add("APT", "/etc/apt");
+            }
+        }
 
         /// <summary>
         /// The following files are used for development, and should only be
@@ -33,11 +45,17 @@ namespace Cryoprison.iOS
         /// mode, then we won't check that they exist.  Very similar to the
         /// not-present check, but tests whether we can open and read them.
         /// </summary>
-        private static readonly Checks DeveloperFilesShouldNotBeAccessible = new Checks().
-          Add("BASH", "/bin/bash").
-          Add("SH", "/bin/sh").
-          Add("SSHD", "/usr/bin/sshd", "/usr/sbin/sshd").
-          Add("SSH", "/usr/bin/ssh");
+        private Checks DeveloperFilesShouldNotBeAccessible
+        {
+            get
+            {
+                return new Checks(this.Env).
+                  Add("BASH", "/bin/bash").
+                  Add("SH", "/bin/sh").
+                  Add("SSHD", "/usr/bin/sshd", "/usr/sbin/sshd").
+                  Add("SSH", "/usr/bin/ssh");
+            }
+        }
 
         /// <summary>
         /// The following locations should be read-only, and thus we shouldn't
@@ -45,28 +63,40 @@ namespace Cryoprison.iOS
         /// try to delete these files, so don't add anything here that is not
         /// supposed to be destroyed.
         /// </summary>
-        private static readonly Checks FilesShouldNotBeDestructivelyWritable = new Checks().
-          Add("PRIVATE", "/private/cryoprison");
+        private Checks FilesShouldNotBeDestructivelyWritable
+        {
+            get
+            {
+                return new Checks(this.Env).
+                    Add("PRIVATE", "/private/cryoprison");
+            }
+        }
 
         /// <summary>
         /// The following files are found on jailbroken devices.  Mostly these
         /// are related to specific apps / package managers
         /// </summary>
-        private static readonly Checks FilesShouldNotBePresent = new Checks().
-          Add("BLACKRA1N", "/Applications/blackra1n.app").
-          Add("CYDIA", "/Applications/Cydia.app", "/private/var/tmp/cydia.log", "/System/Library/LaunchDaemons/com.saurik.Cydia.Startup.plist").
-          Add("FAKECARRIER", "/Applications/FakeCarrier.app").
-          Add("INTELLISCREEN", "/Applications/IntelliScreen.app").
-          Add("MXTUBE", "/Applications/MxTube.app").
-          Add("ROCKAPP", "/Applications/RockApp.app").
-          Add("SBSETTINGS", "/Applications/SBSettings.app").
-          Add("SNOOPITCONFIG", "/Applications/Snoop-it Config.app").
-          Add("WINTERBOARD", "/Applications/WinterBoard.app").
-          Add("IKEYBBOT", "/System/Library/LaunchDaemons/com.ikey.bbot.plist").
-          Add("CYDIA_SUBSTRATE", "/Library/MobileSubstrate/MobileSubstrate.dylib", "/Library/MobileSubstrate/DynamicLibraries/xCon.dylib").
-          Add("SYSLOG", "/var/log/syslog", "/private/var/log/syslog").
-          Add("DEBIANPKG", "/private/etc/dpkg/origins/debian").
-          Add("ICY", "/Applications/Icy.app");
+        private Checks FilesShouldNotBePresent
+        {
+            get
+            {
+                return new Checks(this.Env).
+                  Add("BLACKRA1N", "/Applications/blackra1n.app").
+                  Add("CYDIA", "/Applications/Cydia.app", "/private/var/tmp/cydia.log", "/System/Library/LaunchDaemons/com.saurik.Cydia.Startup.plist").
+                  Add("FAKECARRIER", "/Applications/FakeCarrier.app").
+                  Add("INTELLISCREEN", "/Applications/IntelliScreen.app").
+                  Add("MXTUBE", "/Applications/MxTube.app").
+                  Add("ROCKAPP", "/Applications/RockApp.app").
+                  Add("SBSETTINGS", "/Applications/SBSettings.app").
+                  Add("SNOOPITCONFIG", "/Applications/Snoop-it Config.app").
+                  Add("WINTERBOARD", "/Applications/WinterBoard.app").
+                  Add("IKEYBBOT", "/System/Library/LaunchDaemons/com.ikey.bbot.plist").
+                  Add("CYDIA_SUBSTRATE", "/Library/MobileSubstrate/MobileSubstrate.dylib", "/Library/MobileSubstrate/DynamicLibraries/xCon.dylib").
+                  Add("SYSLOG", "/var/log/syslog", "/private/var/log/syslog").
+                  Add("DEBIANPKG", "/private/etc/dpkg/origins/debian").
+                  Add("ICY", "/Applications/Icy.app");
+            }
+        }
 
         /// <summary>
         /// The following files are used for development, and should only be
@@ -75,12 +105,18 @@ namespace Cryoprison.iOS
         /// not-accessible check, but tests whether we can find them in a
         /// directory listing.
         /// </summary>
-        private static readonly Checks DeveloperFilesShouldNotBePresent = new Checks().
-          Add("SFTPSERVER", "/usr/libexec/sftp-server").
-          Add("BASH", "/bin/bash").
-          Add("SH", "/bin/sh").
-          Add("SSH", "/usr/bin/ssh").
-          Add("SSHD", "/usr/bin/sshd", "/usr/sbin/sshd", "/private/etc/ssh/sshd_config", "/etc/ssh/sshd_config", "/usr/libexec/ssh-keysign");
+        private Checks DeveloperFilesShouldNotBePresent
+        {
+            get
+            {
+                return new Checks(this.Env).
+                  Add("SFTPSERVER", "/usr/libexec/sftp-server").
+                  Add("BASH", "/bin/bash").
+                  Add("SH", "/bin/sh").
+                  Add("SSH", "/usr/bin/ssh").
+                  Add("SSHD", "/usr/bin/sshd", "/usr/sbin/sshd", "/private/etc/ssh/sshd_config", "/etc/ssh/sshd_config", "/usr/libexec/ssh-keysign");
+            }
+        }
 
         /// <summary>
         /// The following urls should not be openable by the app.  Cydia is a
@@ -97,41 +133,32 @@ namespace Cryoprison.iOS
         ///    </array>
         /// </summary>
         ///
-        private static readonly Checks UrlsShouldNotBeOpenable = new Checks().
-          Add("CYDIA", "cydia://package/com.example.package");
+        private Checks UrlsShouldNotBeOpenable
+        {
+            get
+            {
+                return new Checks(this.Env).
+                  Add("CYDIA", "cydia://package/com.example.package");
+            }
+        }
 
         /// <summary>
         /// The following paths are sometimes turned into symbolic links on
         /// jailbroken devices.
         /// </summary>
-        private static readonly Checks PathsShouldNotBeSymbolicLinks = new Checks().
-             Add("APPLICATIONS", "/Applications").
-             Add("RINGTONES", "/var/stash/Library/Ringtones").
-             Add("WALLPAPER", "/var/stash/Library/Wallpaper").
-             Add("INCLUDE", "/var/stash/usr/include").
-             Add("LIBEXEC", "/var/stash/usr/libexec").
-             Add("SHARE", "/var/stash/usr/share").
-             Add("DARWIN9", "/var/stash/usr/arm-apple-darwin9");
-
-        /// <summary>
-        /// Gets or sets the global jailbreak report hook, which is intended
-        /// for debugging and logging.
-        /// </summary>
-        public static Action<string> OnJailbreakReported
+        private Checks PathsShouldNotBeSymbolicLinks
         {
-            get { return Cryoprison.Reporter.OnJailbreakReported; }
-            set { Cryoprison.Reporter.OnJailbreakReported = value; }
-        }
-
-        /// <summary>
-        /// Gets or sets the global exception report hook, which is intended
-        /// for debugging and logging faults during jailbreak detection.
-        /// </summary>
-        /// <value>The on exception reported.</value>
-        public static Action<string, Exception> OnExceptionReported
-        {
-            get { return Cryoprison.Reporter.OnExceptionReported; }
-            set { Cryoprison.Reporter.OnExceptionReported = value; }
+            get
+            {
+                return new Checks(this.Env).
+                     Add("APPLICATIONS", "/Applications").
+                     Add("RINGTONES", "/var/stash/Library/Ringtones").
+                     Add("WALLPAPER", "/var/stash/Library/Wallpaper").
+                     Add("INCLUDE", "/var/stash/usr/include").
+                     Add("LIBEXEC", "/var/stash/usr/libexec").
+                     Add("SHARE", "/var/stash/usr/share").
+                     Add("DARWIN9", "/var/stash/usr/arm-apple-darwin9");
+            }
         }
 
         /// <summary>
@@ -142,7 +169,8 @@ namespace Cryoprison.iOS
         /// appear to be jailbroken due to installed debugging tools.
         /// </summary>
         /// <param name="simulatorFriendly">Simulator friendly.</param>
-        public JailbreakDetector(bool? simulatorFriendly = null)
+        public JailbreakDetector(Cryoprison.Ex.Env env, bool? simulatorFriendly = null)
+            : base(env)
         {
             if (simulatorFriendly == null)
             {

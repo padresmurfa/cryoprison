@@ -1,7 +1,9 @@
 ﻿using System;
+using Cryoprison.Ex;
+
 namespace Cryoprison.Inspectors
 {
-    public abstract class InspectorBase : IInspector
+    public abstract class InspectorBase : EnvDependant, IInspector
     {
         /// <summary>
         /// Format string for the Id string, with a single {0} for the checkId
@@ -35,8 +37,9 @@ namespace Cryoprison.Inspectors
         }
 
         /// <inheritdoc/>
-        public IInspector Init(string checkId, string val)
+        public IInspector Init(Ex.Env env, string checkId, string val)
         {
+            this.Env = env;
             this.checkId = checkId;
             this.id = string.Format(this.idFormat, checkId);
             this.val = val;
@@ -56,5 +59,14 @@ namespace Cryoprison.Inspectors
         /// <inheritdoc/>
         public abstract bool Ok { get; }
 
+        /// <summary>
+        /// Forward ReportException
+        /// </summary>
+        protected Action<string,Exception> ReportException => this.Env.Reporter.ReportException;
+
+        /// <summary>
+        /// Forward ReportJailbreak
+        /// </summary>
+        protected Action<string> ReportJailbreak => this.Env.Reporter.ReportJailbreak;
     }
 }

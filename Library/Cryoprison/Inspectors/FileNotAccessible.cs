@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using Cryoprison.Ex;
 
 namespace Cryoprison.Inspectors
 {
@@ -33,11 +34,11 @@ namespace Cryoprison.Inspectors
         /// <summary>
         /// Determines whether the specified file is accessible, that is can be read
         /// <param name="path">The path to the file.</param>
-        public static bool IsFileAccessible(string path)
+        public bool IsFileAccessible(string path)
         {
             try
             {
-                using (var file = System.IO.File.Open(path, System.IO.FileMode.Open, System.IO.FileAccess.Read, System.IO.FileShare.ReadWrite | System.IO.FileShare.Delete))
+                using (var file = Env.System.IO.File.Open(path, System.IO.FileMode.Open, System.IO.FileAccess.Read, System.IO.FileShare.ReadWrite | System.IO.FileShare.Delete))
                 {
                     return true;
                 }
@@ -48,7 +49,7 @@ namespace Cryoprison.Inspectors
             }
             catch (Exception ex)
             {
-                Reporter.ReportException($"IsFileAccessible bombed for {path}", ex);
+                ReportException($"IsFileAccessible bombed for {path}", ex);
                 return false;
             }
         }

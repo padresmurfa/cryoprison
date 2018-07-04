@@ -9,12 +9,14 @@ namespace Cryoprison.Android.PlatformSpecific
     /// </summary>
     public class ShouldNotHaveSpecificBuildTags : IInspector
     {
+        private Ex.Env Env;
         private string id;
         private string path;
 
         /// <inheritdoc/>
-        public IInspector Init(string id, string path)
+        public IInspector Init(Ex.Env env, string id, string path)
         {
+            this.Env = env;
             this.id = id;
             this.path = path;
             return this;
@@ -43,7 +45,7 @@ namespace Cryoprison.Android.PlatformSpecific
         /// Determines if the app has been rooted, by checking if it has the
         /// specified build tag.
         /// </summary>
-        public static bool HasBuildTag(string target)
+        public bool HasBuildTag(string target)
         {
             try
             {
@@ -53,7 +55,7 @@ namespace Cryoprison.Android.PlatformSpecific
             }
             catch (Exception ex)
             {
-                Reporter.ReportException($"HasBuildTag bombed", ex);
+                this.Env.Reporter.ReportException($"HasBuildTag bombed", ex);
                 return false;
             }
         }

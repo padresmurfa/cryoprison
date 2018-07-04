@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using Cryoprison.Ex;
 
 namespace Cryoprison.Inspectors
 {
@@ -33,15 +34,15 @@ namespace Cryoprison.Inspectors
         /// Determines if the directory is actually present
         /// </summary>
         /// <param name="path">The full path.</param>
-        public static bool IsDirectoryPresent(string path)
+        public bool IsDirectoryPresent(string path)
         {
             try
             {
-                return System.IO.Directory.Exists(path);
+                return Env.System.IO.Directory.Exists(path);
             }
             catch (Exception ex)
             {
-                Reporter.ReportException($"IsDirectoryPresent bombed for {path}", ex);
+                ReportException($"IsDirectoryPresent bombed for {path}", ex);
                 return false;
             }
         }

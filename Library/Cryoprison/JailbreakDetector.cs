@@ -5,14 +5,20 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Xml;
 using Cryoprison.Inspectors;
+using Cryoprison.Ex;
 
 namespace Cryoprison
 {
     /// <summary>
     /// Base class for platform specific jailbreak detectors
     /// </summary>
-    public class JailbreakDetector : IJailbreakDetector
+    public class JailbreakDetector : EnvDependant, IJailbreakDetector
     {
+        public JailbreakDetector(Env env)
+            : base(env)
+        {
+        }
+
         /// <summary>
         /// The jailbreaks that were detected, or null if we need to run the
         /// inspection process first.
@@ -89,7 +95,7 @@ namespace Cryoprison
         /// <returns>The jailbreak ID, or null if the inspector does not believe
         /// that the system is jailbroken.</returns>
         /// <param name="inspector">The inspector.</param>
-        private static string Inspect(IInspector inspector)
+        private string Inspect(IInspector inspector)
         {
             var id = inspector.Id;
 
@@ -100,13 +106,13 @@ namespace Cryoprison
                     return null;   
                 }
 
-                Reporter.ReportJailbreak(id);
+                Env.Reporter.ReportJailbreak(id);
 
                 return id;
             }
             catch (Exception ex)
             {
-                Reporter.ReportException("Inspector crashed: " + id, ex);
+                Env.Reporter.ReportException("Inspector crashed: " + id, ex);
 
                 return null;
             }

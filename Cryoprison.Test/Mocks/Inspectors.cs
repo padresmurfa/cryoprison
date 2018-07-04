@@ -7,6 +7,7 @@ namespace Cryoprison.Test.Mocks
         protected bool bombDuringInit;
         protected bool bombDuringRun;
 
+        public Ex.Env env;
         public string checkId;
         public string val;
 
@@ -45,13 +46,14 @@ namespace Cryoprison.Test.Mocks
             }
         }
 
-        public IInspector Init(string checkId, string val)
+        public IInspector Init(Ex.Env env, string checkId, string val)
         {
             if (this.bombDuringInit && checkId == "FUBAR")
             {
                 throw new Exception("bomb during init");
             }
 
+            this.env = env;
             this.checkId = checkId;
             this.val = val;
             return this;

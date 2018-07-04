@@ -21,16 +21,18 @@ namespace SampleApp.Droid
 
             base.OnCreate(bundle);
 
-            this.jailbreakDetector = new Cryoprison.Android.JailbreakDetector();
+            var env = new Cryoprison.Ex.Env();
 
-            Cryoprison.Android.JailbreakDetector.OnJailbreakReported = (id) => {
+            env.Reporter.OnJailbreakReported = (id) => {
                 Console.WriteLine($"Jailbreak: {id ?? "<null>"}");
             };
 
-            Cryoprison.Android.JailbreakDetector.OnExceptionReported = (message, exception) => {
+            env.Reporter.OnExceptionReported = (message, exception) => {
                 Console.WriteLine($"Jailbreak Error: {message}");
                 Console.WriteLine(exception.ToString());
             };
+
+            this.jailbreakDetector = new Cryoprison.Android.JailbreakDetector(env);
 
             SampleApp.App.IsJailBroken = () =>
             {

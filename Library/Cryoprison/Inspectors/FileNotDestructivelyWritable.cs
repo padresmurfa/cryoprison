@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using Cryoprison.Ex;
 
 namespace Cryoprison.Inspectors
 {
@@ -35,11 +36,11 @@ namespace Cryoprison.Inspectors
         /// create, written to and deleted.
         /// </summary>
         /// <param name="path">The full path.</param>
-        public static bool IsFileDestructivelyWritable(string path)
+        public bool IsFileDestructivelyWritable(string path)
         {
             try
             {
-                using (var file = File.Open(path, FileMode.OpenOrCreate, FileAccess.Write, FileShare.ReadWrite))
+                using (var file = Env.System.IO.File.Open(path, FileMode.OpenOrCreate, FileAccess.Write, FileShare.ReadWrite))
                 {
                     var bytes = new byte[] { 0, 1, 2, 3 };
                     file.Write(bytes, 0, 0);
@@ -56,14 +57,14 @@ namespace Cryoprison.Inspectors
             }
             catch (Exception ex)
             {
-                Reporter.ReportException($"IsFileDestructivelyWritable bombed for {path}", ex);
+                ReportException($"IsFileDestructivelyWritable bombed for {path}", ex);
                 return false;
             }
             finally
             {
                 try
                 {
-                    File.Delete(path);
+                    Env.System.IO.File.Delete(path);
                 }
                 catch (Exception)
                 {

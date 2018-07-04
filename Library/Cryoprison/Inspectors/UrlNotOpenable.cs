@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using Cryoprison.Ex;
 
 namespace Cryoprison.Inspectors
 {
@@ -10,7 +11,7 @@ namespace Cryoprison.Inspectors
     public class UrlNotOpenable : InspectorBase
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="T:Cryoprison.Inspectors.FileNotDestructivelyWritable"/> class.
+        /// Initializes a new instance of the <see cref="T:Cryoprison.Inspectors.UrlNotOpenable"/> class.
         /// </summary>
         public UrlNotOpenable()
             : base("URL_{0}_SHOULD_NOT_BE_OPENABLE")
@@ -52,7 +53,7 @@ namespace Cryoprison.Inspectors
             }
             catch (Exception ex)
             {
-                Reporter.ReportException($"IsUrlOpenable bombed for {url}", ex);
+                ReportException($"IsUrlOpenable bombed for {url}", ex);
                 return false;
             }
         }

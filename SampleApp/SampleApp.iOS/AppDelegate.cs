@@ -23,16 +23,18 @@ namespace SampleApp.iOS
         //
         public override bool FinishedLaunching(UIApplication app, NSDictionary options)
         {
-            this.jailbreakDetector = new Cryoprison.iOS.JailbreakDetector();
+            var env = new Cryoprison.Ex.Env();
 
-            Cryoprison.iOS.JailbreakDetector.OnJailbreakReported = (id) => {
+            env.Reporter.OnJailbreakReported = (id) => {
                 Console.WriteLine($"Jailbreak: {id ?? "<null>"}");
             };
 
-            Cryoprison.iOS.JailbreakDetector.OnExceptionReported = (message, exception) => {
+            env.Reporter.OnExceptionReported = (message, exception) => {
                 Console.WriteLine($"Jailbreak Error: {message}");
                 Console.WriteLine(exception.ToString());
             };
+
+            this.jailbreakDetector = new Cryoprison.iOS.JailbreakDetector(env);
 
             SampleApp.App.IsJailBroken = () =>
             {

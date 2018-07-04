@@ -1,20 +1,20 @@
 ﻿using System;
 
-namespace Cryoprison
+namespace Cryoprison.Ex
 {
     /// <summary>
     /// A global reporting system, for exceptions and jailbreaks.  This is not
     /// intended to be the actual return values of the system, but rather it
     /// provides debugging / logging support hooks.
     /// </summary>
-    public static class Reporter
+    public class Reporter
     {
         /// <summary>
         /// Hook function to be called when a jailbreak is reported, with the
         /// ID string of the jailbreak.  Set this value if you would like
         /// to receive global jailbreak notifications.
         /// </summary>
-        public static Action<string> OnJailbreakReported { get; set; }
+        public Action<string> OnJailbreakReported { get; set; }
 
         /// <summary>
         /// Hook function to be called when an exception is reported, with a
@@ -22,14 +22,14 @@ namespace Cryoprison
         /// raised and the actual exception.  Set this value if you would like
         /// to receive global exception notifications.
         /// </summary>
-        public static Action<string, Exception> OnExceptionReported { get; set; }
+        public Action<string, Exception> OnExceptionReported { get; set; }
 
         /// <summary>
         /// Used internally to report exceptions.
         /// </summary>
         /// <param name="message">The context that the exception was raised in.</param>
         /// <param name="exception">The actual exception.</param>
-        public static void ReportException(string message, Exception exception)
+        public void ReportException(string message, Exception exception)
         {
             try
             {
@@ -64,7 +64,7 @@ namespace Cryoprison
         /// Used internally to report jailbreaks.
         /// </summary>
         /// <param name="id">The jailbreak ID string.</param>
-        public static void ReportJailbreak(string id)
+        public void ReportJailbreak(string id)
         {
             try
             {

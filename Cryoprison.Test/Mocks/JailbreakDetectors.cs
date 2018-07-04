@@ -7,7 +7,8 @@ namespace Cryoprison.Test.Mocks
 {
     public class JailbreakDetector : Cryoprison.JailbreakDetector
     {
-        public JailbreakDetector(IEnumerable<IInspector> inspectors = null)
+        public JailbreakDetector(Ex.Env env, IEnumerable<IInspector> inspectors = null)
+            : base(env)
         {
             base.AddInspectors(inspectors);
         }

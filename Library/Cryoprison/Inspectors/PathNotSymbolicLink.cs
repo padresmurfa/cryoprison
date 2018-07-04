@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using Cryoprison.Ex;
 
 namespace Cryoprison.Inspectors
 {
@@ -9,7 +10,7 @@ namespace Cryoprison.Inspectors
     public class PathNotSymbolicLink : InspectorBase
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="T:Cryoprison.Inspectors.FileNotDestructivelyWritable"/> class.
+        /// Initializes a new instance of the <see cref="T:Cryoprison.Inspectors.PathNotSymbolicLink"/> class.
         /// </summary>
         public PathNotSymbolicLink()
             : base("PATH_{0}_SHOULD_NOT_REFER_TO_SYMBOLIC_LINK")
@@ -50,7 +51,7 @@ namespace Cryoprison.Inspectors
             }
             catch (Exception ex)
             {
-                Reporter.ReportException($"DoesPathPointToSymbolicLink bombed for {path}", ex);
+                ReportException($"DoesPathPointToSymbolicLink bombed for {path}", ex);
                 return false;
             }
         }

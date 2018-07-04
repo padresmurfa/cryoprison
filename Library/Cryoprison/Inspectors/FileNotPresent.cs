@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using Cryoprison.Ex;
 
 namespace Cryoprison.Inspectors
 {
@@ -9,7 +10,7 @@ namespace Cryoprison.Inspectors
     public class FileNotPresent : InspectorBase
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="T:Cryoprison.Inspectors.FileNotDestructivelyWritable"/> class.
+        /// Initializes a new instance of the <see cref="T:Cryoprison.Inspectors.FileNotPresent"/> class.
         /// </summary>
         public FileNotPresent()
             : base("FILE_{0}_SHOULD_NOT_BE_PRESENT")
@@ -32,11 +33,11 @@ namespace Cryoprison.Inspectors
         /// Determines if the file is in deed present
         /// </summary>
         /// <param name="path">The full path of the file.</param>
-        public static bool IsFilePresent(string path)
+        public bool IsFilePresent(string path)
         {
             try
             {
-                return System.IO.File.Exists(path);
+                return Env.System.IO.File.Exists(path);
             }
             catch (System.IO.DirectoryNotFoundException)
             {
@@ -44,7 +45,7 @@ namespace Cryoprison.Inspectors
             }
             catch (Exception ex)
             {
-                Reporter.ReportException($"IsFilePresent bombed for {path}", ex);
+                ReportException($"IsFilePresent bombed for {path}", ex);
                 return false;
             }
         }

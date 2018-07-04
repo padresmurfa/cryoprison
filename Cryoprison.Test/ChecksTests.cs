@@ -11,7 +11,9 @@ namespace Cryoprison.Test
         [Fact]
         public void InitiallyEmpty()
         {
-            var checks = new Checks();
+            var env = new Ex.Env();
+
+            var checks = new Checks(env);
 
             Assert.Empty(checks.GetInspectors<Mocks.Inspector>());
         }
@@ -21,7 +23,9 @@ namespace Cryoprison.Test
         [InlineData("ch2", "v2", "MOCK_CH2_ID")]
         public void CanAdd(string checkId, string val, string id)
         {
-            var checks = new Checks();
+            var env = new Ex.Env();
+
+            var checks = new Checks(env);
 
             var checks2 = checks.Add(checkId, val);
 
@@ -42,7 +46,9 @@ namespace Cryoprison.Test
         [InlineData("Ok1", "v1", "MOCK_OK1_ID", true)]
         public void CanCheckForOk(string checkId, string val, string id, bool ok)
         {
-            var checks = new Checks().Add(checkId, val);
+            var env = new Ex.Env();
+
+            var checks = new Checks(env).Add(checkId, val);
 
             var inspectors = checks.GetInspectors<Mocks.Inspector>();
 
@@ -56,7 +62,9 @@ namespace Cryoprison.Test
         [InlineData("CheckId", "MOCK_CHECKID_ID")]
         public void UppercasesIds(string checkId, string id)
         {
-            var checks = new Checks().Add(checkId, "asdf");
+            var env = new Ex.Env();
+
+            var checks = new Checks(env).Add(checkId, "asdf");
 
             var inspectors = checks.GetInspectors<Mocks.Inspector>();
 
@@ -69,7 +77,9 @@ namespace Cryoprison.Test
         [InlineData("root1", "root2")]
         public void PrependsAllRoots(params string[] roots)
         {
-            var checks = new Checks().AddRoots(roots).Add("check", "/asdf");
+            var env = new Ex.Env();
+
+            var checks = new Checks(env).AddRoots(roots).Add("check", "/asdf");
 
             var inspectors = checks.GetInspectors<Mocks.Inspector>().ToList();
 
@@ -89,7 +99,9 @@ namespace Cryoprison.Test
         [InlineData("check1","check2")]
         public void PrependsRootToAllChecks(params string[] checkIds)
         {
-            var checks = new Checks().AddRoots("root");
+            var env = new Ex.Env();
+
+            var checks = new Checks(env).AddRoots("root");
 
             foreach (var checkId in checkIds)
             {
@@ -116,7 +128,9 @@ namespace Cryoprison.Test
         [InlineData("")]
         public void AddRootsIsRobust(params string[] roots)
         {
-            var checks = new Checks().AddRoots(roots);
+            var env = new Ex.Env();
+
+            var checks = new Checks(env).AddRoots(roots);
 
             var inspectors = checks.GetInspectors<Mocks.Inspector>().ToList();
 
@@ -134,15 +148,17 @@ namespace Cryoprison.Test
         [InlineData("checkId", "root", "")]
         public void AddIsRobust(string checkId, params string[] roots)
         {
+            var env = new Ex.Env();
+
             var expectedCount = (roots ?? new string[0]).Count(x => !string.IsNullOrEmpty(x));
 
-            var checks = new Checks().Add(checkId, roots);
+            var checks = new Checks(env).Add(checkId, roots);
             var inspectors = checks.GetInspectors<Mocks.Inspector>().ToList();
             Assert.Equal(expectedCount, inspectors.Count());
 
             // a bit redundant to do this for every set of inline data, but
             // double check that we are robust against no roots.
-            checks = new Checks().Add(checkId);
+            checks = new Checks(env).Add(checkId);
             inspectors = checks.GetInspectors<Mocks.Inspector>().ToList();
             Assert.Equal(0, inspectors.Count());
         }
@@ -150,11 +166,13 @@ namespace Cryoprison.Test
         [Fact]
         public void GetInspectorsIsRobust()
         {
-            var checks = new Checks();
+            var env = new Ex.Env();
+
+            var checks = new Checks(env);
             var inspectors = checks.GetInspectors<Mocks.Inspector>().ToList();
             Assert.Equal(0, inspectors.Count());
 
-            checks = new Checks().Add("fubar", "fubar").Add("carry","on");
+            checks = new Checks(env).Add("fubar", "fubar").Add("carry","on");
 
             // bombs during construction, so all are doomed.
             inspectors = checks.GetInspectors<Mocks.InspectorThatBombsDuringConstruction>().ToList();

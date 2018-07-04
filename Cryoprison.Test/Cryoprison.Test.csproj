@@ -14,6 +14,7 @@
 
   <ItemGroup>
     <Folder Include="Mocks\" />
+    <Folder Include="Inspectors\" />
   </ItemGroup>
   <Import Project="..\Library\Cryoprison\Cryoprison.projitems" Label="Shared" Condition="Exists('..\Library\Cryoprison\Cryoprison.projitems')" />
 </Project>

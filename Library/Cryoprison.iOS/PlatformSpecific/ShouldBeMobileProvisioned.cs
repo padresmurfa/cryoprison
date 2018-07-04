@@ -10,12 +10,16 @@ namespace Cryoprison.Inspectors
     /// </summary>
     public class ShouldBeMobileProvisioned : IInspector
     {
+        private Ex.Env Env;
+
         /// <summary>
         /// Initialize the inspector.  This inspector does not have any need
         /// for params really, so it ignores them.
         /// </summary>
-        public IInspector Init(string id, string path)
+        public IInspector Init(Ex.Env env, string id, string path)
         {
+            this.Env = env;
+
             return this;
         }
 
@@ -40,7 +44,7 @@ namespace Cryoprison.Inspectors
         /// <summary>
         /// Determines if the app is provisioned for mobile.
         /// </summary>
-        public static bool IsMobileProvisioned()
+        public bool IsMobileProvisioned()
         {
             try
             {
@@ -54,7 +58,7 @@ namespace Cryoprison.Inspectors
             }
             catch (Exception ex)
             {
-                Reporter.ReportException($"IsMobileProvisioned bombed", ex);
+                this.Env.Reporter.ReportException($"IsMobileProvisioned bombed", ex);
                 return false;
             }
         }

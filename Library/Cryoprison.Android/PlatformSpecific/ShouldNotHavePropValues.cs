@@ -10,14 +10,16 @@ namespace Cryoprison.Android.PlatformSpecific
     /// </summary>
     public class ShouldNotHavePropValues : IInspector
     {
+        private Ex.Env Env;
         private string id;
 
         private string key;
         private string value;
 
         /// <inheritdoc/>
-        public IInspector Init(string id, string path)
+        public IInspector Init(Ex.Env env, string id, string path)
         {
+            this.Env = env;
             this.id = id;
 
             this.key = path.Split('=')[0];
@@ -48,7 +50,7 @@ namespace Cryoprison.Android.PlatformSpecific
         /// Determines if the app has been rooted, by checking if the specified
         /// OS property has the specified value
         /// </summary>
-        public static bool HasPropValue(string key, string value)
+        public bool HasPropValue(string key, string value)
         {
             try
             {
@@ -87,7 +89,7 @@ namespace Cryoprison.Android.PlatformSpecific
             }
             catch (Exception ex)
             {
-                Reporter.ReportException($"HasPropValue bombed", ex);
+                this.Env.Reporter.ReportException($"HasPropValue bombed", ex);
                 return false;
             }
         }

@@ -30,6 +30,6 @@ namespace Cryoprison
         /// <returns>The initialized inspector.</returns>
         /// <param name="checkId">The check identifier.</param>
         /// <param name="val">The path.</param>
-        IInspector Init(string checkId, string val);
+        IInspector Init(Ex.Env env, string checkId, string val);
     }
 }

@@ -9,12 +9,14 @@ namespace Cryoprison.Android.PlatformSpecific
     /// </summary>
     public class ShouldNotBeAbleToLocateFile : IInspector
     {
+        private Ex.Env Env;
         private string id;
         private string path;
 
         /// <inheritdoc/>
-        public IInspector Init(string id, string path)
+        public IInspector Init(Ex.Env env, string id, string path)
         {
+            this.Env = env;
             this.id = id;
             this.path = path;
             return this;
@@ -43,7 +45,7 @@ namespace Cryoprison.Android.PlatformSpecific
         /// Determines if the app has been rooted, by checking if we can
         /// locate the specified file.
         /// </summary>
-        public static bool CanLocateFile(string target)
+        public bool CanLocateFile(string target)
         {
             try
             {
@@ -69,7 +71,7 @@ namespace Cryoprison.Android.PlatformSpecific
             }
             catch (Exception ex)
             {
-                Reporter.ReportException($"CanLocateFile bombed", ex);
+                this.Env.Reporter.ReportException($"CanLocateFile bombed", ex);
                 return false;
             }
         }
