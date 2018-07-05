@@ -36,62 +36,65 @@ namespace Cryoprison.Android
         }
 
         /// <summary>
-        /// Known root apps should not be installed
+        /// Apps that provide root access should not be installed
         /// </summary>
-        private Checks KnownRootApps
+        private Checks RootAppsShouldNotBeInstalled
         {
             get
             {
                 return new Checks(this.Env).
-                    Add("NOSHUFOU", "com.noshufou.android.su", "com.noshufou.android.su.elite").
                     Add("CHAINFIRE", "eu.chainfire.supersu").
                     Add("KOUSHIKDUTTA_SUPERUSER", "com.koushikdutta.superuser").
+                    Add("NOSHUFOU", "com.noshufou.android.su", "com.noshufou.android.su.elite").
                     Add("THIRDPARTY", "com.thirdparty.superuser").
-                    Add("YELLOWES", "com.yellowes.su").
-                    Add("TOPJOHNWU", "com.topjohnwu.magisk");
+                    Add("TOPJOHNWU", "com.topjohnwu.magisk").
+                    Add("YELLOWES", "com.yellowes.su");
             }
         }
 
         /// <summary>
         /// Dangerous apps should not be installed
         /// </summary>
-        private Checks KnownDangerousApps
+        private Checks DangerousAppsShouldNotBeInstalled
         {
             get
             {
                 return new Checks(this.Env).
-                    Add("KOUSHIKDUTTA_ROMMANAGER", "com.koushikdutta.rommanager", "com.koushikdutta.rommanager.license").
-                    Add("DIMONVIDEO", "com.dimonvideo.luckypatcher").
                     Add("CHELPUS", "com.chelpus.lackypatch", "com.chelpus.luckypatcher").
-                    Add("RAMDROID", "com.ramdroid.appquarantine", "com.ramdroid.appquarantinepro").
-                    Add("IABSCOIN", "com.android.vending.billing.InAppBillingService.COIN");
+                    Add("DIMONVIDEO", "com.dimonvideo.luckypatcher").
+                    Add("IABSCOIN", "com.android.vending.billing.InAppBillingService.COIN").
+                    Add("KOUSHIKDUTTA_ROMMANAGER", "com.koushikdutta.rommanager", "com.koushikdutta.rommanager.license").
+                    Add("RAMDROID", "com.ramdroid.appquarantine", "com.ramdroid.appquarantinepro");
             }
         }
 
         /// <summary>
-        /// Root cloking apps should not be installed
+        /// Root cloaking apps should not be installed
         /// </summary>
-        private Checks KnownRootCloackingPackages
+        private Checks RootCloakingAppsShouldNotBeInstalled
         {
             get
             {
                 return new Checks(this.Env).
-                    Add("DEVADVANCE", "com.devadvance.rootcloak", "com.devadvance.rootcloakplus").
-                    Add("XPOSED", "de.robv.android.xposed.installer").
-                    Add("SAURIK", "com.saurik.substrate").
-                    Add("ZACHSPONG", "com.zachspong.temprootremovejb").
                     Add("AMPHORAS", "com.amphoras.hidemyroot", "com.amphoras.hidemyrootadfree").
-                    Add("FORMYHM", "com.formyhm.hiderootPremium", "com.formyhm.hideroot");
+                    Add("DEVADVANCE", "com.devadvance.rootcloak", "com.devadvance.rootcloakplus").
+                    Add("FORMYHM", "com.formyhm.hiderootPremium", "com.formyhm.hideroot").
+                    Add("SAURIK", "com.saurik.substrate").
+                    Add("XPOSED", "de.robv.android.xposed.installer").
+                    Add("ZACHSPONG", "com.zachspong.temprootremovejb");
             }
         }
 
         /// <summary>
         /// The root directories where we are likely to find executable files
         /// </summary>
-        private static string[] ExecutableRoots = {
+        public static string[] CommonExecutableRootDirectories = {
+            "/cache/",
+            "/data/",
             "/data/local/",
             "/data/local/bin/",
             "/data/local/xbin/",
+            "/dev/",
             "/sbin/",
             "/su/bin/",
             "/system/bin/",
@@ -99,23 +102,20 @@ namespace Cryoprison.Android
             "/system/bin/failsafe/",
             "/system/sd/xbin/",
             "/system/usr/we-need-root/",
-            "/system/xbin/",
-            "/cache/",
-            "/data/",
-            "/dev/"
+            "/system/xbin/"
         };
 
         /// <summary>
         /// Some dangerous executables that should not be installed
         /// </summary>
-        private Checks DangerousExecutables
+        private Checks DangerousExecutablesShouldNotBeInstalled
         {
             get
             {
                 return new Checks(this.Env).
-                    AddRoots(ExecutableRoots).
-                    Add("SU", "su").
-                    Add("MAGISK", "magisk");
+                    AddRoots(CommonExecutableRootDirectories).
+                        Add("SU", "su").
+                        Add("MAGISK", "magisk");
             }
         }
 
@@ -123,25 +123,25 @@ namespace Cryoprison.Android
         /// The following directories tend to be made writable be jailbreak
         /// tools.  So we try to create / update / delete a file in them.
         /// </summary>
-        private Checks PathsThatShouldNotBeWritable
+        private Checks PathsShouldNotBeWritable
         {
             get
             {
                 return new Checks(this.Env).
+                    Add("ETC", "/etc/cryoprison").
+                    Add("SBIN", "/sbin/cryoprison").
                     Add("SYSTEM", "/system/cryoprison").
                     Add("SYSTEM_BIN", "/system/bin/cryoprison").
                     Add("SYSTEM_SBIN", "/system/sbin/cryoprison").
                     Add("SYSTEM_XBIN", "/system/xbin/cryoprison").
-                    Add("VENDOR_BIN", "/vendor/bin/cryoprison").
-                    Add("SBIN", "/sbin/cryoprison").
-                    Add("ETC", "/etc/cryoprison");
+                    Add("VENDOR_BIN", "/vendor/bin/cryoprison");
             }
         }
 
         /// <summary>
         /// The following properties should not be set
         /// </summary>
-        private Checks PropsThatShouldNotBeSet
+        private Checks PropsShouldNotBeSet
         {
             get
             {
@@ -154,7 +154,7 @@ namespace Cryoprison.Android
         /// The following properties should not be set unless we are debugging,
         /// that is in a simulator friendly mode.
         /// </summary>
-        private Checks PropsThatShouldNotBeSetUnlessDebugging
+        private Checks PropsShouldNotBeSetUnlessDebugging
         {
             get
             {
@@ -185,17 +185,17 @@ namespace Cryoprison.Android
 
             if (!simulatorFriendly.Value)
             {
-                this.AddInspectors(PropsThatShouldNotBeSetUnlessDebugging.GetInspectors<ShouldNotHavePropValues>());
+                this.AddInspectors(PropsShouldNotBeSetUnlessDebugging.GetInspectors<ShouldNotHavePropValues>());
             }
 
             this.AddInspectors(ExecutablesShouldNotBeFound.GetInspectors<ShouldNotBeAbleToLocateFile>());
             this.AddInspectors(BuildTagsShouldNotBeFound.GetInspectors<ShouldNotHaveSpecificBuildTags>());
-            this.AddInspectors(KnownRootApps.GetInspectors<ShouldNotHavePackageInstalled>());
-            this.AddInspectors(KnownDangerousApps.GetInspectors<ShouldNotHavePackageInstalled>());
-            this.AddInspectors(KnownRootCloackingPackages.GetInspectors<ShouldNotHavePackageInstalled>());
-            this.AddInspectors(DangerousExecutables.GetInspectors<FileNotPresent>());
-            this.AddInspectors(PathsThatShouldNotBeWritable.GetInspectors<FileNotDestructivelyWritable>());
-            this.AddInspectors(PropsThatShouldNotBeSet.GetInspectors<ShouldNotHavePropValues>());
+            this.AddInspectors(RootAppsShouldNotBeInstalled.GetInspectors<ShouldNotHavePackageInstalled>());
+            this.AddInspectors(DangerousAppsShouldNotBeInstalled.GetInspectors<ShouldNotHavePackageInstalled>());
+            this.AddInspectors(RootCloakingAppsShouldNotBeInstalled.GetInspectors<ShouldNotHavePackageInstalled>());
+            this.AddInspectors(DangerousExecutablesShouldNotBeInstalled.GetInspectors<FileNotPresent>());
+            this.AddInspectors(PathsShouldNotBeWritable.GetInspectors<FileNotDestructivelyWritable>());
+            this.AddInspectors(PropsShouldNotBeSet.GetInspectors<ShouldNotHavePropValues>());
         }
     }
 }

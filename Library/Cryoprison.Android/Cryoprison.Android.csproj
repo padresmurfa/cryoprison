@@ -46,11 +46,6 @@
   <ItemGroup>
     <Compile Include="Resources\Resource.designer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="JailbreakDetector.Android.cs" />
-    <Compile Include="PlatformSpecific\ShouldNotBeAbleToLocateFile.cs" />
-    <Compile Include="PlatformSpecific\ShouldNotHaveSpecificBuildTags.cs" />
-    <Compile Include="PlatformSpecific\ShouldNotHavePackageInstalled.cs" />
-    <Compile Include="PlatformSpecific\ShouldNotHavePropValues.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\AboutResources.txt" />
@@ -58,9 +53,7 @@
   <ItemGroup>
     <AndroidResource Include="Resources\values\Strings.xml" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="PlatformSpecific\" />
-  </ItemGroup>
+  <Import Project="..\Cryoprison.Android.Testable\Cryoprison.Android.Testable.projitems" Label="Shared" Condition="Exists('..\Cryoprison.Android.Testable\Cryoprison.Android.Testable.projitems')" />
   <Import Project="..\Cryoprison\Cryoprison.projitems" Label="Shared" Condition="Exists('..\Cryoprison\Cryoprison.projitems')" />
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\Android\Xamarin.Android.CSharp.targets" />
 </Project>

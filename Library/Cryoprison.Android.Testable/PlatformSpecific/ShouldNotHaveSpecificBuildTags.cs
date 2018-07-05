@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using AndroidBuild = Android.OS.Build;
+using A = Android;
 
 namespace Cryoprison.Android.PlatformSpecific
 {
@@ -17,8 +17,25 @@ namespace Cryoprison.Android.PlatformSpecific
         public IInspector Init(Ex.Env env, string id, string path)
         {
             this.Env = env;
-            this.id = id;
-            this.path = path;
+            try
+            {
+                if (string.IsNullOrWhiteSpace(id))
+                {
+                    throw new ArgumentException(id);
+                }
+                else if (string.IsNullOrWhiteSpace(path))
+                {
+                    throw new ArgumentException(path);
+                }
+
+                this.id = id;
+                this.path = path;
+            }
+            catch (Exception ex)
+            {
+                this.Env.Reporter.ReportException($"ShouldNotHaveSpecificBuildTags bombed in Init ({id})", ex);
+            }
+
             return this;
         }
 
@@ -49,7 +66,7 @@ namespace Cryoprison.Android.PlatformSpecific
         {
             try
             {
-                var buildTags = AndroidBuild.Tags?.ToLowerInvariant();
+                var buildTags = A.OS.Build.Tags?.ToLowerInvariant();
 
                 return buildTags?.Contains(target.ToLowerInvariant()) ?? false;
             }

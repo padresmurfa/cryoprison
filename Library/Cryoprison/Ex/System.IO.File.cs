@@ -45,5 +45,6 @@ namespace Cryoprison.Ex
             {
                 this.delete = value;
             }
-        }    }
+        }
+    }
 }

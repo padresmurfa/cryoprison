@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using A = Android;
-using Android.Content.PM;
 
 namespace Cryoprison.Android.PlatformSpecific
 {
@@ -29,7 +28,7 @@ namespace Cryoprison.Android.PlatformSpecific
             get
             {
                 var idUpper = this.id.ToUpperInvariant();
-                return $"SHOULD_NOT_HAVE_BUILD_TAG_{idUpper}";
+                return $"SHOULD_NOT_HAVE_PACKAGE_INSTALLED_{idUpper}";
             }
         }
 
@@ -62,7 +61,7 @@ namespace Cryoprison.Android.PlatformSpecific
                         pm.GetPackageInfo(target, 0);
                         return true;
                     }
-                    catch (PackageManager.NameNotFoundException)
+                    catch (A.Content.PM.PackageManager.NameNotFoundException)
                     {
                         return false;
                     }
@@ -71,7 +70,7 @@ namespace Cryoprison.Android.PlatformSpecific
             }
             catch (Exception ex)
             {
-                this.Env.Reporter.ReportException($"HasPackageInstalled bombed", ex);
+                this.Env.Reporter.ReportException($"HasPackageInstalled bombed for {target}", ex);
                 return false;
             }
         }

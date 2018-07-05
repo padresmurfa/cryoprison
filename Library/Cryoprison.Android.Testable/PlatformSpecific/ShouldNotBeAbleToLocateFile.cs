@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using Java.IO;
 
 namespace Cryoprison.Android.PlatformSpecific
 {
@@ -53,9 +52,9 @@ namespace Cryoprison.Android.PlatformSpecific
                 {
                     try
                     {
-                        using (var inputStream = new InputStreamReader(process.InputStream))
+                        using (var inputStream = new Java.IO.InputStreamReader(process.InputStream))
                         {
-                            using (var inputReader = new BufferedReader(inputStream))
+                            using (var inputReader = new Java.IO.BufferedReader(inputStream))
                             {
                                 // will return the path of the target, if found,
                                 // otherwise an empty response.
@@ -71,7 +70,7 @@ namespace Cryoprison.Android.PlatformSpecific
             }
             catch (Exception ex)
             {
-                this.Env.Reporter.ReportException($"CanLocateFile bombed", ex);
+                Env.Reporter.ReportException($"CanLocateFile bombed for {target}", ex);
                 return false;
             }
         }

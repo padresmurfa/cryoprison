@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <MSBuildAllProjects>$(MSBuildAllProjects);$(MSBuildThisFileFullPath)</MSBuildAllProjects>
+    <HasSharedItems>true</HasSharedItems>
+    <SharedGUID>{E97ADE0E-1FE5-423D-B253-1A74CEE93173}</SharedGUID>
+  </PropertyGroup>
+  <PropertyGroup Label="Configuration">
+    <Import_RootNamespace>Cryoprison.Android.Testable</Import_RootNamespace>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="$(MSBuildThisFileDirectory)PlatformSpecific\ShouldNotBeAbleToLocateFile.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)PlatformSpecific\ShouldNotHavePackageInstalled.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)PlatformSpecific\ShouldNotHavePropValues.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)PlatformSpecific\ShouldNotHaveSpecificBuildTags.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)JailbreakDetector.Android.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="$(MSBuildThisFileDirectory)PlatformSpecific\" />
+  </ItemGroup>
+</Project>
