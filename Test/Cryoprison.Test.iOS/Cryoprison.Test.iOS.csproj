@@ -14,11 +14,10 @@
 
   <ItemGroup>
     <Folder Include="Mocks\" />
-    <Folder Include="Mocks\Android\" />
-    <Folder Include="Mocks\Java\" />
-    <Folder Include="PlatformSpecific\" />
+    <Folder Include="Mocks\Foundation\" />
+    <Folder Include="Mocks\UIKit\" />
   </ItemGroup>
   <Import Project="..\Cryoprison.Test.Shared\Cryoprison.Test.Shared.projitems" Label="Shared" Condition="Exists('..\Cryoprison.Test.Shared\Cryoprison.Test.Shared.projitems')" />
+  <Import Project="..\..\Library\Cryoprison.iOS.Testable\Cryoprison.iOS.Testable.projitems" Label="Shared" Condition="Exists('..\..\Library\Cryoprison.iOS.Testable\Cryoprison.iOS.Testable.projitems')" />
   <Import Project="..\..\Library\Cryoprison\Cryoprison.projitems" Label="Shared" Condition="Exists('..\..\Library\Cryoprison\Cryoprison.projitems')" />
-  <Import Project="..\..\Library\Cryoprison.Android.Testable\Cryoprison.Android.Testable.projitems" Label="Shared" Condition="Exists('..\..\Library\Cryoprison.Android.Testable\Cryoprison.Android.Testable.projitems')" />
 </Project>

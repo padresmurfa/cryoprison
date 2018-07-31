@@ -1,6 +1,5 @@
 ﻿using System;
 using Xunit;
-using Cryoprison.Test.Android.Mocks;
 using Cryoprison.Android;
 using A = Android;
 using Java.Lang;
@@ -15,7 +14,7 @@ namespace Cryoprison.Test.Android
         {
             using (var gel = new GlobalLock())
             {
-                var jbd = new Cryoprison.Android.JailbreakDetector(new Ex.Env());
+                var jbd = new Cryoprison.Android.JailbreakDetector(gel.Env, simulatorFriendly: false);
 
                 Assert.False(jbd.IsJailbroken);
             }
@@ -27,7 +26,7 @@ namespace Cryoprison.Test.Android
         {
             using (var gel = new GlobalLock())
             {
-                var jbd = new Cryoprison.Android.JailbreakDetector(new Ex.Env());
+                var jbd = new Cryoprison.Android.JailbreakDetector(gel.Env, simulatorFriendly: false);
 
                 Java.Lang.Runtime.MockRuntime.MockExec = (parms) => {
                     if (parms.Count() == 2 && parms[0] == "which" && parms[1] == executable)
@@ -54,7 +53,7 @@ namespace Cryoprison.Test.Android
         {
             using (var gel = new GlobalLock())
             {
-                var jbd = new Cryoprison.Android.JailbreakDetector(new Ex.Env());
+                var jbd = new Cryoprison.Android.JailbreakDetector(gel.Env, simulatorFriendly: false);
 
                 A.OS.Build.Tags = key;
 
@@ -73,7 +72,7 @@ namespace Cryoprison.Test.Android
         {
             using (var gel = new GlobalLock())
             {
-                var jbd = new Cryoprison.Android.JailbreakDetector(new Ex.Env());
+                var jbd = new Cryoprison.Android.JailbreakDetector(gel.Env, simulatorFriendly: false);
 
                 A.App.Application.Context.PackageManager.MockPackages = new System.Collections.Generic.Dictionary<string, A.Content.PM.PackageInfo>
                 {
@@ -97,7 +96,7 @@ namespace Cryoprison.Test.Android
         {
             using (var gel = new GlobalLock())
             {
-                var jbd = new Cryoprison.Android.JailbreakDetector(new Ex.Env());
+                var jbd = new Cryoprison.Android.JailbreakDetector(gel.Env, simulatorFriendly: false);
 
                 A.App.Application.Context.PackageManager.MockPackages = new System.Collections.Generic.Dictionary<string, A.Content.PM.PackageInfo>
                 {
@@ -122,7 +121,7 @@ namespace Cryoprison.Test.Android
         {
             using (var gel = new GlobalLock())
             {
-                var jbd = new Cryoprison.Android.JailbreakDetector(new Ex.Env());
+                var jbd = new Cryoprison.Android.JailbreakDetector(gel.Env, simulatorFriendly: false);
 
                 A.App.Application.Context.PackageManager.MockPackages = new System.Collections.Generic.Dictionary<string, A.Content.PM.PackageInfo>
                 {
@@ -147,13 +146,11 @@ namespace Cryoprison.Test.Android
 
             using (var gel = new GlobalLock())
             {
-                var env = new Ex.Env();
-
-                env.System.IO.File.Exists = (path) => {
+                gel.Env.System.IO.File.Exists = (path) => {
                     return path == location + executable;
                 };
 
-                var jbd = new Cryoprison.Android.JailbreakDetector(env);
+                var jbd = new Cryoprison.Android.JailbreakDetector(gel.Env, simulatorFriendly: false);
 
                 Assert.True(jbd.IsJailbroken);
             }
@@ -173,7 +170,7 @@ namespace Cryoprison.Test.Android
 
             using (var gel = new GlobalLock())
             {
-                var env = new Ex.Env();
+                var env = gel.Env;
 
                 env.System.IO.Directory.Exists = (path) => {
                     return path == directory;
@@ -192,7 +189,7 @@ namespace Cryoprison.Test.Android
                     throw new AccessViolationException();
                 };
 
-                var jbd = new Cryoprison.Android.JailbreakDetector(env);
+                var jbd = new Cryoprison.Android.JailbreakDetector(env, simulatorFriendly: false);
 
                 Assert.True(jbd.IsJailbroken);
             }
@@ -205,7 +202,7 @@ namespace Cryoprison.Test.Android
         {
             using (var gel = new GlobalLock())
             {
-                var jbd = new Cryoprison.Android.JailbreakDetector(new Ex.Env(), simulatorFriendly: false);
+                var jbd = new Cryoprison.Android.JailbreakDetector(gel.Env, simulatorFriendly: false);
 
                 Java.Lang.Runtime.MockRuntime.MockExec = (parms) => {
                     if (parms.Count() == 1 && parms[0] == "getprop")

@@ -4,7 +4,6 @@ using Cryoprison.Android.PlatformSpecific;
 using System.Linq;
 using A=Android;
 using System.Collections.Generic;
-using Cryoprison.Test.Android.Mocks;
 
 namespace Cryoprison.Test.Android.PlatformSpecific
 {

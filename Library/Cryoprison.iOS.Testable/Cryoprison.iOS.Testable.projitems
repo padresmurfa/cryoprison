@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <MSBuildAllProjects>$(MSBuildAllProjects);$(MSBuildThisFileFullPath)</MSBuildAllProjects>
+    <HasSharedItems>true</HasSharedItems>
+    <SharedGUID>{1E6E8942-950F-42E6-B0C6-0FFF333B3C0A}</SharedGUID>
+  </PropertyGroup>
+  <PropertyGroup Label="Configuration">
+    <Import_RootNamespace>Cryoprison.iOS.Testable</Import_RootNamespace>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="$(MSBuildThisFileDirectory)JailbreakDetector.iOS.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)PlatformSpecific\PathNotSymbolicLink.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)PlatformSpecific\ShouldBeMobileProvisioned.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)PlatformSpecific\UrlNotOpenable.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="$(MSBuildThisFileDirectory)PlatformSpecific\" />
+  </ItemGroup>
+</Project>

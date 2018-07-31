@@ -2,7 +2,6 @@
 using Xunit;
 using Cryoprison.Android.PlatformSpecific;
 using System.Linq;
-using Cryoprison.Test.Android.Mocks;
 
 namespace Cryoprison.Test.Android.PlatformSpecific
 {

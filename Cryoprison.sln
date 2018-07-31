@@ -31,6 +31,12 @@ Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "Cryoprison.Android.Testable
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Cryoprison.Test.Android", "Test\Cryoprison.Test.Android\Cryoprison.Test.Android.csproj", "{84F99648-0A3A-4AFF-A49C-CE940465A599}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Cryoprison.Test.iOS", "Test\Cryoprison.Test.iOS\Cryoprison.Test.iOS.csproj", "{3CF91C09-B501-4C7F-A906-0547996FACFC}"
+EndProject
+Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "Cryoprison.iOS.Testable", "Library\Cryoprison.iOS.Testable\Cryoprison.iOS.Testable.shproj", "{1E6E8942-950F-42E6-B0C6-0FFF333B3C0A}"
+EndProject
+Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "Cryoprison.Test.Shared", "Test\Cryoprison.Test.Shared\Cryoprison.Test.Shared.shproj", "{194E0164-90C1-45E0-8DD0-C9914350DA73}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -155,6 +161,22 @@ Global
 		{84F99648-0A3A-4AFF-A49C-CE940465A599}.Ad-Hoc|iPhone.Build.0 = Release|Any CPU
 		{84F99648-0A3A-4AFF-A49C-CE940465A599}.AppStore|iPhone.ActiveCfg = Release|Any CPU
 		{84F99648-0A3A-4AFF-A49C-CE940465A599}.AppStore|iPhone.Build.0 = Release|Any CPU
+		{3CF91C09-B501-4C7F-A906-0547996FACFC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3CF91C09-B501-4C7F-A906-0547996FACFC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3CF91C09-B501-4C7F-A906-0547996FACFC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3CF91C09-B501-4C7F-A906-0547996FACFC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3CF91C09-B501-4C7F-A906-0547996FACFC}.Debug|iPhoneSimulator.ActiveCfg = Debug|Any CPU
+		{3CF91C09-B501-4C7F-A906-0547996FACFC}.Debug|iPhoneSimulator.Build.0 = Debug|Any CPU
+		{3CF91C09-B501-4C7F-A906-0547996FACFC}.Release|iPhoneSimulator.ActiveCfg = Release|Any CPU
+		{3CF91C09-B501-4C7F-A906-0547996FACFC}.Release|iPhoneSimulator.Build.0 = Release|Any CPU
+		{3CF91C09-B501-4C7F-A906-0547996FACFC}.Debug|iPhone.ActiveCfg = Debug|Any CPU
+		{3CF91C09-B501-4C7F-A906-0547996FACFC}.Debug|iPhone.Build.0 = Debug|Any CPU
+		{3CF91C09-B501-4C7F-A906-0547996FACFC}.Release|iPhone.ActiveCfg = Release|Any CPU
+		{3CF91C09-B501-4C7F-A906-0547996FACFC}.Release|iPhone.Build.0 = Release|Any CPU
+		{3CF91C09-B501-4C7F-A906-0547996FACFC}.Ad-Hoc|iPhone.ActiveCfg = Release|Any CPU
+		{3CF91C09-B501-4C7F-A906-0547996FACFC}.Ad-Hoc|iPhone.Build.0 = Release|Any CPU
+		{3CF91C09-B501-4C7F-A906-0547996FACFC}.AppStore|iPhone.ActiveCfg = Release|Any CPU
+		{3CF91C09-B501-4C7F-A906-0547996FACFC}.AppStore|iPhone.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{EB926FCF-8A1F-4FB3-BE7C-5191AC241934} = {37D5C134-B8FC-4A29-92DE-0061ACDC6C14}
@@ -166,5 +188,8 @@ Global
 		{71BF7649-A0CA-4F89-9259-E0A74471AD90} = {311EAC67-79BE-484B-AB2D-366B6E415EBA}
 		{E97ADE0E-1FE5-423D-B253-1A74CEE93173} = {37D5C134-B8FC-4A29-92DE-0061ACDC6C14}
 		{84F99648-0A3A-4AFF-A49C-CE940465A599} = {311EAC67-79BE-484B-AB2D-366B6E415EBA}
+		{3CF91C09-B501-4C7F-A906-0547996FACFC} = {311EAC67-79BE-484B-AB2D-366B6E415EBA}
+		{1E6E8942-950F-42E6-B0C6-0FFF333B3C0A} = {37D5C134-B8FC-4A29-92DE-0061ACDC6C14}
+		{194E0164-90C1-45E0-8DD0-C9914350DA73} = {311EAC67-79BE-484B-AB2D-366B6E415EBA}
 	EndGlobalSection
 EndGlobal

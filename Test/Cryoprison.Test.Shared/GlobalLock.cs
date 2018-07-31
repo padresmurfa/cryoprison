@@ -1,13 +1,15 @@
 ﻿using System;
+using System.IO;
 using System.Threading;
-using A = Android;
 
-namespace Cryoprison.Test.Android.Mocks
+namespace Cryoprison.Test.Shared
 {
     public class GlobalLock : IDisposable
     {
         private static object lockObject = new { };
         private bool lockTaken;
+
+        public Ex.Env Env { get; set; } = new Ex.Env();
 
         public GlobalLock(int timeout = 30000)
         {
@@ -19,12 +21,14 @@ namespace Cryoprison.Test.Android.Mocks
             {
                 throw new Exception($"Failed to acquire global engine lock - timeout after {timeout} ms");
             }
-            else
-            {
-                Java.Lang.Runtime.MockRuntime = new Java.Lang.Runtime();
-                A.App.Application.Context = new A.Content.Context();
-                A.OS.Build.Tags = null;
-            }
+
+            this.Env.System.IO.File.Exists = (path) => {
+                return false;
+            };
+
+            this.Env.System.IO.File.Open = (a, b, c, d) => {
+                throw new FileNotFoundException();
+            };
         }
 
         public void Dispose()

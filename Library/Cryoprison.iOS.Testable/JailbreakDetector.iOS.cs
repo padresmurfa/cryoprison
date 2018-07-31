@@ -19,7 +19,7 @@ namespace Cryoprison.iOS
             {
                 return new Checks(this.Env).
                   Add("SBSETTINGS", "/private/var/mobileLibrary/SBSettingsThemes").
-                  Add("STASH", "/private/var/stash").
+                  Add("STASH", "/private/var/stash", "/private/var/db/stash").
                   Add("APT", "/private/var/lib/apt", "/private/var/cache/apt", "/var/lib/apt", "/private/var/lib/apt", "/private/etc/apt", "/etc/apt", "/private/cache/apt").
                   Add("CYDIA", "/private/var/lib/cydia", "/var/lib/cydia", "/usr/libexec/cydia");
             }
