@@ -4,7 +4,7 @@ A mobile app jailbreak detector to be used in Xamarin.
 
 Supports iOS and Android.
 
-## Architecture
+## Overview
 
 The host application should instantiate a **JailbreakDetector** from the correct
 Cryoprison platform library.  Debug builds will be simulator-friendly to the
