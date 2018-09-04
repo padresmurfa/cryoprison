@@ -1,0 +1,21 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+    <GeneratePackageOnBuild>false</GeneratePackageOnBuild>
+    <PackageId>Cryoprison.Android</PackageId>
+    <Authors>David Brandt</Authors>
+    <Company />
+    <Product>Cryoprison</Product>
+    <Description>Cryoprison is a jailbreak detection library for Xamarin apps</Description>
+    <Copyright>@2018 David Brandt</Copyright>
+    <PackageLicenseUrl>http://unlicense.org/</PackageLicenseUrl>
+    <RepositoryUrl>https://github.com/padresmurfa/cryoprison</RepositoryUrl>
+    <PackageTags>jailbreak rootkit</PackageTags>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\Library\Cryoprison.Android\Cryoprison.Android.csproj" />
+  </ItemGroup>
+
+</Project>
