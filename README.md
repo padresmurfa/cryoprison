@@ -7,8 +7,52 @@ Supports iOS and Android.
 ## Overview
 
 The host application should instantiate a **JailbreakDetector** from the correct
-Cryoprison platform library.  Debug builds will be simulator-friendly to the
-extent possible by default.
+Cryoprison platform library.  It is recommended that debug builds be configured to
+be simulator-friendly.
+
+## Initialization
+
+```
+    if (Cryoprison.Factory.IsSupported)
+    {
+        var env = Cryoprison.Factory.CreateEnvironment();
+
+        env.Reporter.OnJailbreakReported = (id) =>
+        {
+			// Global hook for jailbreak reporting, e.g. to
+			// forward the issue to analytics
+            Console.WriteLine($"Jailbreak: {id ?? "<null>"}");
+        };
+
+        env.Reporter.OnExceptionReported = (message, exception) =>
+        {
+			// Global hook for exception occurrance in the
+			// cryoprison, e.g. to forward the exception to
+			// analytics
+            Console.WriteLine($"Jailbreak Error: {message}");
+            Console.WriteLine(exception.ToString());
+        };
+
+		bool? simulatorFriendly;
+#if DEBUG
+		simulatorFriendly = true;
+#endif
+        this.jailbreakDetector = Cryoprison.Factory.CreateJailbreakDetector(env, simulatorFriendly);
+
+		// it is recommended that the app query the library to determine
+		// if it is jailbroken, e.g.
+        var isJailbroken = this.jailbreakDetector.IsJailbroken;
+        
+		// the app can query to determine what jailbreaks were detected using
+		// the violations list. This may indicate what tool was detected, but
+		// many tools use similar methodologies so this cannot be gauranteed.
+		// e.g.
+        var violations = this.jailbreakDetector.Violations;
+    }
+```
+
+
+## Usage
 
 The **JailbreakDetector** implements the **IJailbreakDetector** interface, which
 provides three methods, as described below:
@@ -54,17 +98,14 @@ Method | Description
 OnJailbreakReported | Invoked each time a jailbreak is detected, with the ID of the jailbreak.
 OnExceptionReported | Invoked each time an exception occurs, with an internal reason and the exception body
 
-## SampleApp
-
-The sample app is a very simple Xamarin forms application that performs a
-jailbreak detection check when the main window appears.  It references the
-Cryoprison library directly as an assembly.
-
 ## NugetTest
 
-The nuget test app is pretty much identical to the SampleApp in functionality, but references the
-Cryoprison library through the Nuget package.  This is how consumers of the
-library should use the app.
+The nuget test app is a very simple Xamarin forms application that performs a
+jailbreak detection check when the main window appears.  It references the
+Cryoprison library directly as a nuget package.  This is longer the preferred
+method of using Cryoprison.
+
+
 
 ## Library
 
@@ -75,5 +116,13 @@ which is still in early stages.
 ## Cryoprison
 
 The Cryoprison nuget package resides in this folder.
+
+
+## SampleApp
+
+The sample app is a very simple Xamarin forms application that performs a
+jailbreak detection check when the main window appears.  It references the
+Cryoprison library directly as an assembly.  This is no longer the preferred
+method of using Cryoprison.
 
 
