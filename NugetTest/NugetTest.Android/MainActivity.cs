@@ -21,30 +21,47 @@ namespace NugetTest.Droid
 
             base.OnCreate(bundle);
 
-            var env = new Cryoprison.Ex.Env();
-
-            env.Reporter.OnJailbreakReported = (id) => {
-                Console.WriteLine($"Jailbreak: {id ?? "<null>"}");
-            };
-
-            env.Reporter.OnExceptionReported = (message, exception) => {
-                Console.WriteLine($"Jailbreak Error: {message}");
-                Console.WriteLine(exception.ToString());
-            };
-
-            // The Nuget Test app is intended to show that the library was imported from nuget and worked,
-            // so no need to be simulator friendly here.
-            this.jailbreakDetector = new Cryoprison.Android.JailbreakDetector(env, simulatorFriendly: false);
-
-            NugetTest.App.IsJailBroken = () =>
+            if (Cryoprison.Factory.IsSupported)
             {
-                return this.jailbreakDetector.IsJailbroken;
-            };
+                var env = Cryoprison.Factory.Current.CreateEnvironment();
 
-            NugetTest.App.JailBreaks = () =>
+                env.Reporter.OnJailbreakReported = (id) =>
+                {
+                    Console.WriteLine($"Jailbreak: {id ?? "<null>"}");
+                };
+
+                env.Reporter.OnExceptionReported = (message, exception) =>
+                {
+                    Console.WriteLine($"Jailbreak Error: {message}");
+                    Console.WriteLine(exception.ToString());
+                };
+
+                // The Nuget Test app is intended to show that the library was imported from nuget and worked,
+                // so no need to be simulator friendly here.
+                this.jailbreakDetector = Cryoprison.Factory.Current.CreateJailbreakDetector(env, simulatorFriendly: false);
+
+                NugetTest.App.IsJailBroken = () =>
+                {
+                    return this.jailbreakDetector.IsJailbroken;
+                };
+
+                NugetTest.App.JailBreaks = () =>
+                {
+                    return this.jailbreakDetector.Violations;
+                };
+            }
+            else
             {
-                return this.jailbreakDetector.Violations;
-            };
+                NugetTest.App.IsJailBroken = () =>
+                {
+                    return false;
+                };
+
+                NugetTest.App.JailBreaks = () =>
+                {
+                    return new string[0];
+                };
+            }
 
             global::Xamarin.Forms.Forms.Init(this, bundle);
             LoadApplication(new App());
