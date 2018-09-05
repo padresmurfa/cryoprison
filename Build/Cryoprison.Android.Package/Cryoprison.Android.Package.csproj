@@ -8,10 +8,13 @@
     <Company />
     <Product>Cryoprison</Product>
     <Description>Cryoprison is a jailbreak detection library for Xamarin apps</Description>
-    <Copyright>@2018 David Brandt</Copyright>
+    <Copyright>Copyright ©2018 David Brandt</Copyright>
     <PackageLicenseUrl>http://unlicense.org/</PackageLicenseUrl>
     <RepositoryUrl>https://github.com/padresmurfa/cryoprison</RepositoryUrl>
-    <PackageTags>jailbreak rootkit</PackageTags>
+    <PackageTags>jailbreak rootkit detection android mobile xamarin</PackageTags>
+    <Title>Cryoprison.Android</Title>
+    <Owners>PadreSmurfa</Owners>
+    <PackageProjectUrl>https://github.com/padresmurfa/cryoprison</PackageProjectUrl>
   </PropertyGroup>
 
   <ItemGroup>
