@@ -13,6 +13,8 @@ namespace NugetTest.iOS
     [Register("AppDelegate")]
     public partial class AppDelegate : global::Xamarin.Forms.Platform.iOS.FormsApplicationDelegate
     {
+        private Cryoprison.IJailbreakDetector jailbreakDetector;
+
         //
         // This method is invoked when the application has loaded and is ready to run. In this 
         // method you should instantiate the window, load the UI into it and then make the window
@@ -22,6 +24,28 @@ namespace NugetTest.iOS
         //
         public override bool FinishedLaunching(UIApplication app, NSDictionary options)
         {
+            var env = new Cryoprison.Ex.Env();
+
+            env.Reporter.OnJailbreakReported = (id) => {
+                Console.WriteLine($"Jailbreak: {id ?? "<null>"}");
+            };
+
+            env.Reporter.OnExceptionReported = (message, exception) => {
+                Console.WriteLine($"Jailbreak Error: {message}");
+                Console.WriteLine(exception.ToString());
+            };
+
+            this.jailbreakDetector = new Cryoprison.iOS.JailbreakDetector(env);
+            NugetTest.App.IsJailBroken = () =>
+            {
+                return this.jailbreakDetector.IsJailbroken;
+            };
+
+            NugetTest.App.JailBreaks = () =>
+            {
+                return this.jailbreakDetector.Violations;
+            };
+
             global::Xamarin.Forms.Forms.Init();
             LoadApplication(new App());
 
