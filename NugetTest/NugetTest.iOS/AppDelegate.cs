@@ -26,7 +26,7 @@ namespace NugetTest.iOS
         {
             if (Cryoprison.Factory.IsSupported)
             {
-                var env = Cryoprison.Factory.Current.CreateEnvironment();
+                var env = Cryoprison.Factory.CreateEnvironment();
 
                 env.Reporter.OnJailbreakReported = (id) =>
                 {
@@ -41,7 +41,7 @@ namespace NugetTest.iOS
 
                 // The Nuget Test app is intended to show that the library was imported from nuget and worked,
                 // so no need to be simulator friendly here.
-                this.jailbreakDetector = Cryoprison.Factory.Current.CreateJailbreakDetector(env, simulatorFriendly: false);
+                this.jailbreakDetector = Cryoprison.Factory.CreateJailbreakDetector(env, simulatorFriendly: false);
 
                 NugetTest.App.IsJailBroken = () =>
                 {

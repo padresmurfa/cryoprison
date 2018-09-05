@@ -14,10 +14,20 @@ namespace Cryoprison
         /// </summary>
         public static bool IsSupported => implementation.Value == null ? false : true;
 
+        public static Cryoprison.Ex.Env CreateEnvironment()
+        {
+            return Current.CreateEnvironment();
+        }
+
+        public static IJailbreakDetector CreateJailbreakDetector(Ex.Env env = null, bool? simulatorFriendly = null)
+        {
+            return Current.CreateJailbreakDetector(env, simulatorFriendly);
+        }
+
         /// <summary>
         /// Current plugin implementation to use
         /// </summary>
-        public static ICryoprison Current
+        private static ICryoprison Current
         {
             get
             {

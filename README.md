@@ -54,13 +54,26 @@ Method | Description
 OnJailbreakReported | Invoked each time a jailbreak is detected, with the ID of the jailbreak.
 OnExceptionReported | Invoked each time an exception occurs, with an internal reason and the exception body
 
-
 ## SampleApp
 
 The sample app is a very simple Xamarin forms application that performs a
-jailbreak detection check when the main window appears.
+jailbreak detection check when the main window appears.  It references the
+Cryoprison library directly as an assembly.
+
+## NugetTest
+
+The nuget test app is pretty much identical to the SampleApp in functionality, but references the
+Cryoprison library through the Nuget package.  This is how consumers of the
+library should use the app.
 
 ## Library
 
-The Cryoprison library resides in this folder, and should currently be included
-via manual means in your project.  Future versions may include a NuGet package.
+The Cryoprison library resides in this folder, and can be included
+via manual means in your project.  Alternatively, use the Nuget package,
+which is still in early stages.
+
+## Cryoprison
+
+The Cryoprison nuget package resides in this folder.
+
+
