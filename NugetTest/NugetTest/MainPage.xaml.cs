@@ -13,5 +13,16 @@ namespace NugetTest
         {
             InitializeComponent();
         }
+
+        protected override void OnAppearing()
+        {
+            base.OnAppearing();
+
+            var msg = App.GetJailBreakAlertMessage();
+            if (msg != null)
+            {
+                this.DisplayAlert("Jailbreak Detected!", "The following jailbreaks were detected: " + msg, "Close");
+            }
+        }
     }
 }

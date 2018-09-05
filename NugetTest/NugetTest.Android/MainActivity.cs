@@ -32,7 +32,9 @@ namespace NugetTest.Droid
                 Console.WriteLine(exception.ToString());
             };
 
-            this.jailbreakDetector = new Cryoprison.Android.JailbreakDetector(env);
+            // The Nuget Test app is intended to show that the library was imported from nuget and worked,
+            // so no need to be simulator friendly here.
+            this.jailbreakDetector = new Cryoprison.Android.JailbreakDetector(env, simulatorFriendly: false);
 
             NugetTest.App.IsJailBroken = () =>
             {
