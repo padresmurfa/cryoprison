@@ -102,7 +102,7 @@ OnExceptionReported | Invoked each time an exception occurs, with an internal re
 
 The nuget test app is a very simple Xamarin forms application that performs a
 jailbreak detection check when the main window appears.  It references the
-Cryoprison library directly as a nuget package.  This is longer the preferred
+Cryoprison library directly as a nuget package.  This is the preferred
 method of using Cryoprison.
 
 
