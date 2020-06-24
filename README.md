@@ -33,7 +33,7 @@ be simulator-friendly.
             Console.WriteLine(exception.ToString());
         };
 
-		bool? simulatorFriendly;
+		bool? simulatorFriendly = null;
 #if DEBUG
 		simulatorFriendly = true;
 #endif
